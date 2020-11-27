@@ -15,12 +15,13 @@
  * limitations under the License.
  */
 
-/*
- * 	andfix.cpp
- *
- *  @author : sanping.li@alipay.com
- *
+/**
+ * andfix.cpp
+ * @author : sanping.li@alipay.com
  */
+
+// IP寄存器(r12)：Intra-Procedure-call Scratch Register；内部程序调用暂存寄存器
+
 #include <jni.h>
 #include <stdio.h>
 #include <cassert>
@@ -40,11 +41,9 @@ extern void art_setFieldFlag(JNIEnv* env, jobject field);
 
 static bool isArt;
 
-static jboolean setup(JNIEnv* env, jclass clazz, jboolean isart,
-		jint apilevel) {
+static jboolean setup(JNIEnv* env, jclass clazz, jboolean isart, jint apilevel) {
 	isArt = isart;
-	LOGD("vm is: %s , apilevel is: %i", (isArt ? "art" : "dalvik"),
-			(int )apilevel);
+	LOGD("vm is: %s , apilevel is: %i", (isArt ? "art" : "dalvik"), (int )apilevel);
 	if (isArt) {
 		return art_setup(env, (int) apilevel);
 	} else {
@@ -52,8 +51,7 @@ static jboolean setup(JNIEnv* env, jclass clazz, jboolean isart,
 	}
 }
 
-static void replaceMethod(JNIEnv* env, jclass clazz, jobject src,
-		jobject dest) {
+static void replaceMethod(JNIEnv* env, jclass clazz, jobject src, jobject dest) {
 	if (isArt) {
 		art_replaceMethod(env, src, dest);
 	} else {
@@ -73,16 +71,31 @@ static void setFieldFlag(JNIEnv* env, jclass clazz, jobject field) {
  */
 static JNINativeMethod gMethods[] = {
 /* name, signature, funcPtr */
-{ "setup", "(ZI)Z", (void*) setup }, { "replaceMethod",
+    {
+        "setup",
+        "(ZI)Z",
+        (void*) setup
+    },
+    {
+        "replaceMethod",
 		"(Ljava/lang/reflect/Method;Ljava/lang/reflect/Method;)V",
-		(void*) replaceMethod }, { "setFieldFlag",
-		"(Ljava/lang/reflect/Field;)V", (void*) setFieldFlag }, };
+		(void*) replaceMethod
+	},
+	{
+	    "setFieldFlag",
+		"(Ljava/lang/reflect/Field;)V",
+		(void*) setFieldFlag
+	},
+};
 
 /*
  * Register several native methods for one class.
  */
-static int registerNativeMethods(JNIEnv* env, const char* className,
-		JNINativeMethod* gMethods, int numMethods) {
+static int registerNativeMethods(JNIEnv* env, 
+								 const char* className, 
+								 JNINativeMethod* gMethods, 
+								 int numMethods) {
+									 
 	jclass clazz;
 	clazz = env->FindClass(className);
 	if (clazz == NULL) {
@@ -100,9 +113,9 @@ static int registerNativeMethods(JNIEnv* env, const char* className,
  */
 static int registerNatives(JNIEnv* env) {
 	if (!registerNativeMethods(env, JNIREG_CLASS, gMethods,
-			sizeof(gMethods) / sizeof(gMethods[0])))
+			sizeof(gMethods) / sizeof(gMethods[0]))) {
 		return JNI_FALSE;
-
+	}
 	return JNI_TRUE;
 }
 

@@ -44,14 +44,14 @@
 
 static int apilevel;
 
-extern jboolean __attribute__ ((visibility ("hidden"))) art_setup(JNIEnv* env,
-		int level) {
+extern jboolean __attribute__ ((visibility ("hidden"))) 
+art_setup(JNIEnv* env, int level) {
 	apilevel = level;
 	return JNI_TRUE;
 }
 
-extern void __attribute__ ((visibility ("hidden"))) art_replaceMethod(
-		JNIEnv* env, jobject src, jobject dest) {
+extern void __attribute__ ((visibility ("hidden"))) 
+art_replaceMethod(JNIEnv* env, jobject src, jobject dest) {
     if (apilevel > 23) {
         replace_7_0(env, src, dest);
     } else if (apilevel > 22) {
@@ -60,13 +60,13 @@ extern void __attribute__ ((visibility ("hidden"))) art_replaceMethod(
 		replace_5_1(env, src, dest);
 	} else if (apilevel > 19) {
 		replace_5_0(env, src, dest);
-    }else{
+    } else {
         replace_4_4(env, src, dest);
     }
 }
 
-extern void __attribute__ ((visibility ("hidden"))) art_setFieldFlag(
-		JNIEnv* env, jobject field) {
+extern void __attribute__ ((visibility ("hidden"))) 
+art_setFieldFlag(JNIEnv* env, jobject field) {
     if (apilevel > 23) {
         setFieldFlag_7_0(env, field);
     } else if (apilevel > 22) {

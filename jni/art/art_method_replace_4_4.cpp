@@ -44,16 +44,12 @@
 #include "common.h"
 
 void replace_4_4(JNIEnv* env, jobject src, jobject dest) {
-	art::mirror::ArtMethod* smeth =
-			(art::mirror::ArtMethod*) env->FromReflectedMethod(src);
+	art::mirror::ArtMethod* smeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(src);
+	art::mirror::ArtMethod* dmeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(dest);
 
-	art::mirror::ArtMethod* dmeth =
-			(art::mirror::ArtMethod*) env->FromReflectedMethod(dest);
-
-	dmeth->declaring_class_->class_loader_ =
-			smeth->declaring_class_->class_loader_; //for plugin classloader
-	dmeth->declaring_class_->clinit_thread_id_ =
-			smeth->declaring_class_->clinit_thread_id_;
+    // for plugin classloader
+	dmeth->declaring_class_->class_loader_ = smeth->declaring_class_->class_loader_; 
+	dmeth->declaring_class_->clinit_thread_id_ = smeth->declaring_class_->clinit_thread_id_;
 	dmeth->declaring_class_->status_ = smeth->declaring_class_->status_-1;
 	//for reflection invoke
 	reinterpret_cast<art::mirror::Class*>(dmeth->declaring_class_)->super_class_ = 0;
@@ -81,15 +77,14 @@ void replace_4_4(JNIEnv* env, jobject src, jobject dest) {
     
     smeth->method_index_ = dmeth->method_index_;
 
-	LOGD("replace_4_4: %d , %d", smeth->entry_point_from_compiled_code_,
+	LOGD("replace_4_4: %d , %d", 
+            smeth->entry_point_from_compiled_code_,
 			dmeth->entry_point_from_compiled_code_);
 
 }
 
 void setFieldFlag_4_4(JNIEnv* env, jobject field) {
-	art::mirror::ArtField* artField =
-			(art::mirror::ArtField*) env->FromReflectedField(field);
+	art::mirror::ArtField* artField = (art::mirror::ArtField*) env->FromReflectedField(field);
 	artField->access_flags_ = artField->access_flags_ & (~0x0002) | 0x0001;
 	LOGD("setFieldFlag_4_4: %d ", artField->access_flags_);
 }
-

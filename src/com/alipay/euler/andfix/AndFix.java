@@ -41,9 +41,7 @@ public class AndFix {
 	}
 
 	private static native boolean setup(boolean isArt, int apilevel);
-
 	private static native void replaceMethod(Method dest, Method src);
-
 	private static native void setFieldFlag(Field field);
 
 	/**
@@ -58,6 +56,7 @@ public class AndFix {
 	public static void addReplaceMethod(Method src, Method dest) {
 		try {
 			replaceMethod(src, dest);
+			// 这里是参数 dest 所属的类的 Class<?>对象
 			initFields(dest.getDeclaringClass());
 		} catch (Throwable e) {
 			Log.e(TAG, "addReplaceMethod", e);
@@ -74,8 +73,8 @@ public class AndFix {
 	 */
 	public static Class<?> initTargetClass(Class<?> clazz) {
 		try {
-			Class<?> targetClazz = Class.forName(clazz.getName(), true,
-					clazz.getClassLoader());
+			Class<?> targetClazz = Class.forName(clazz.getName(), 
+					true, clazz.getClassLoader());
 
 			initFields(targetClazz);
 			return targetClazz;
@@ -94,8 +93,7 @@ public class AndFix {
 	private static void initFields(Class<?> clazz) {
 		Field[] srcFields = clazz.getDeclaredFields();
 		for (Field srcField : srcFields) {
-			Log.d(TAG, "modify " + clazz.getName() + "." + srcField.getName()
-					+ " flag:");
+			Log.d(TAG, "modify:" + clazz.getName() + "." + srcField.getName() + " flag:");
 			setFieldFlag(srcField);
 		}
 	}

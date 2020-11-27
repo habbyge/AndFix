@@ -215,14 +215,16 @@ public class SecurityChecker {
 			PackageManager pm = context.getPackageManager();
 			String packageName = context.getPackageName();
 
-			PackageInfo packageInfo = pm.getPackageInfo(packageName,
-					PackageManager.GET_SIGNATURES);
-			CertificateFactory certFactory = CertificateFactory
-					.getInstance("X.509");
+			PackageInfo packageInfo = pm.getPackageInfo(
+					packageName, PackageManager.GET_SIGNATURES);
+
+			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
 			ByteArrayInputStream stream = new ByteArrayInputStream(
 					packageInfo.signatures[0].toByteArray());
-			X509Certificate cert = (X509Certificate) certFactory
-					.generateCertificate(stream);
+
+			X509Certificate cert = (X509Certificate)
+					certFactory.generateCertificate(stream);
+
 			mDebuggable = cert.getSubjectX500Principal().equals(DEBUG_DN);
 			mPublicKey = cert.getPublicKey();
 		} catch (NameNotFoundException e) {

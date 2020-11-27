@@ -146,7 +146,7 @@ class ArtField : public Object{
 public:
 	uint32_t declaring_class_;
 	int32_t access_flags_;
-	int32_t field_dex_idx_;
+	int32_t field_dex_idx_; // 在其所属类的字段列表的索引
 	int32_t offset_;
 };
 

@@ -52,12 +52,12 @@ public class AndFixManager {
 	/**
 	 * classes will be fixed
 	 */
-	private static Map<String, Class<?>> mFixedClass = new ConcurrentHashMap<String, Class<?>>();
+	private static final Map<String, Class<?>> mFixedClass = new ConcurrentHashMap<>();
 
 	/**
 	 * whether support AndFix
 	 */
-	private boolean mSupport = false;
+	private boolean mSupport;
 
 	/**
 	 * security check
@@ -79,7 +79,8 @@ public class AndFixManager {
 				mSupport = false;
 				Log.e(TAG, "opt dir create error.");
 			} else if (!mOptDir.isDirectory()) {// not directory
-				mOptDir.delete();
+				boolean ret = mOptDir.delete();
+				Log.i(TAG, "mOptDir.delete(): " + ret);
 				mSupport = false;
 			}
 		}
@@ -100,9 +101,7 @@ public class AndFixManager {
 
 	/**
 	 * fix
-	 * 
-	 * @param patchPath
-	 *            patch path
+	 * @param patchPath patch path
 	 */
 	public synchronized void fix(String patchPath) {
 		fix(new File(patchPath), mContext.getClassLoader(), null);
@@ -118,13 +117,14 @@ public class AndFixManager {
 	 * @param classes
 	 *            classes will be fixed
 	 */
-	public synchronized void fix(File file, ClassLoader classLoader,
-			List<String> classes) {
+	public synchronized
+	void fix(File file, ClassLoader classLoader, List<String> classes) {
+
 		if (!mSupport) {
 			return;
 		}
 
-		if (!mSecurityChecker.verifyApk(file)) {// security check fail
+		if (!mSecurityChecker.verifyApk(file)) { // security check fail
 			return;
 		}
 
@@ -137,6 +137,7 @@ public class AndFixManager {
 				// Vulnerability-Parasyte.
 				// btw:exaggerated android Vulnerability-Parasyte
 				// http://secauo.com/Exaggerated-Android-Vulnerability-Parasyte.html
+
 				if (mSecurityChecker.verifyOpt(optfile)) {
 					saveFingerprint = false;
 				} else if (!optfile.delete()) {
@@ -152,12 +153,14 @@ public class AndFixManager {
 			}
 
 			ClassLoader patchClassLoader = new ClassLoader(classLoader) {
+
 				@Override
 				protected Class<?> findClass(String className)
 						throws ClassNotFoundException {
+
 					Class<?> clazz = dexFile.loadClass(className, this);
-					if (clazz == null
-							&& className.startsWith("com.alipay.euler.andfix")) {
+					final String packagePath = "com.alipay.euler.andfix";
+					if (clazz == null && className.startsWith(packagePath)) {
 						return Class.forName(className);// annotation’s class
 														// not found
 					}
@@ -167,8 +170,9 @@ public class AndFixManager {
 					return clazz;
 				}
 			};
+
 			Enumeration<String> entrys = dexFile.entries();
-			Class<?> clazz = null;
+			Class<?> clazz;
 			while (entrys.hasMoreElements()) {
 				String entry = entrys.nextElement();
 				if (classes != null && !classes.contains(entry)) {
@@ -186,9 +190,7 @@ public class AndFixManager {
 
 	/**
 	 * fix class
-	 * 
-	 * @param clazz
-	 *            class
+	 * @param clazz class
 	 */
 	private void fixClass(Class<?> clazz, ClassLoader classLoader) {
 		Method[] methods = clazz.getDeclaredMethods();
@@ -197,8 +199,9 @@ public class AndFixManager {
 		String meth;
 		for (Method method : methods) {
 			methodReplace = method.getAnnotation(MethodReplace.class);
-			if (methodReplace == null)
+			if (methodReplace == null) {
 				continue;
+			}
 			clz = methodReplace.clazz();
 			meth = methodReplace.method();
 			if (!isEmpty(clz) && !isEmpty(meth)) {
@@ -216,19 +219,19 @@ public class AndFixManager {
 	 * @param method source method
 	 */
 	private void replaceMethod(ClassLoader classLoader, String clz,
-			String meth, Method method) {
+							   String meth, Method method) {
+
 		try {
 			String key = clz + "@" + classLoader.toString();
 			Class<?> clazz = mFixedClass.get(key);
-			if (clazz == null) {// class not load
+			if (clazz == null) { // class not load
 				Class<?> clzz = classLoader.loadClass(clz);
 				// initialize target class
 				clazz = AndFix.initTargetClass(clzz);
 			}
-			if (clazz != null) {// initialize class OK
+			if (clazz != null) { // initialize class OK
 				mFixedClass.put(key, clazz);
-				Method src = clazz.getDeclaredMethod(meth,
-						method.getParameterTypes());
+				Method src = clazz.getDeclaredMethod(meth, method.getParameterTypes());
 				AndFix.addReplaceMethod(src, method);
 			}
 		} catch (Exception e) {

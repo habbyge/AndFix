@@ -87,8 +87,10 @@ typedef struct DexProto {
 	u4 protoIdx; /* index into proto_ids table of dexFile */
 } DexProto;
 
-typedef void (*DalvikBridgeFunc)(const u4* args, void* pResult,
-		const void* method, void* self);
+typedef void (*DalvikBridgeFunc)(const u4* args, 
+								 void* pResult,
+								 const void* method, 
+								 void* self);
 
 struct Field {
 	void* clazz; /* class in which the field is declared */
@@ -141,7 +143,7 @@ enum ClassStatus {
 	CLASS_VERIFIED = 5, /* logically part of linking; done pre-init */
 	CLASS_INITIALIZING = 6, /* class init in progress */
 	CLASS_INITIALIZED = 7, /* ready to go */
-}typedef ClassStatus;
+} typedef ClassStatus;
 
 typedef struct ClassObject {
 	struct Object o; // emulate C++ inheritance, Collin
@@ -291,4 +293,4 @@ typedef void* (*dvmThreadSelf_func)();
 dvmDecodeIndirectRef_func dvmDecodeIndirectRef_fnPtr;
 dvmThreadSelf_func dvmThreadSelf_fnPtr;
 
-jmethodID jClassMethod;
+jmethodID jClassMethod; // Java中Method类中的getDeclaringClass()

@@ -41,6 +41,7 @@ public:
     
     uint32_t monitor_;
 };
+
 class Class: public Object {
 public:
     // A magic value for reference_instance_offsets_. Ignore the bits and walk the super chain when

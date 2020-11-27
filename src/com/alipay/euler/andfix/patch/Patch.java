@@ -58,7 +58,7 @@ public class Patch implements Comparable<Patch> {
 	 */
 	private Date mTime;
 	/**
-	 * classes of patch
+	 * classes of patch: <pathName, List<该patch文件中包括的所有class文件名>>
 	 */
 	private Map<String, List<String>> mClassesMap;
 
