@@ -93,7 +93,9 @@ public class AndFix {
 	private static void initFields(Class<?> clazz) {
 		Field[] srcFields = clazz.getDeclaredFields();
 		for (Field srcField : srcFields) {
-			Log.d(TAG, "modify:" + clazz.getName() + "." + srcField.getName() + " flag:");
+			Log.d(TAG, "modify:" + clazz.getName() + "."
+					+ srcField.getName() + " flag:");
+
 			setFieldFlag(srcField);
 		}
 	}

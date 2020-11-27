@@ -88,7 +88,7 @@ public class PatchManager {
         if (!mPatchDir.exists() && !mPatchDir.mkdirs()) {// make directory fail
             Log.e(TAG, "patch dir create error.");
             return;
-        } else if (!mPatchDir.isDirectory()) {// not directory
+        } else if (!mPatchDir.isDirectory()) { // not directory
             mPatchDir.delete();
             return;
         }
