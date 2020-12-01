@@ -22,6 +22,18 @@
 
 // IP寄存器(r12)：Intra-Procedure-call Scratch Register；内部程序调用暂存寄存器
 
+/**
+ * Android热修复原理(https://zhuanlan.zhihu.com/p/64730686)
+ * 
+ * AndFix的原理就是方法的替换，把有bug的方法替换成补丁文件中的方法。
+ * 注：在Native层使用指针替换的方式替换bug方法，已达到修复bug的目的。
+ *
+ * AndFix采用native hook的方式，这套方案直接使用 art_replaceMethod 替换 class中方
+ * 法的实现。由于它并没有整体替换class, 而field在class中的相对地址在class加载时已确定，
+ * 所以AndFix无法支持新增或者删除filed的情况(通过替换init与clinit只可以修改field的数值)。
+ * Andfix可以支持的补丁场景相对有限，仅仅可以使用它来修复特定问题。
+ */
+
 #include <jni.h>
 #include <stdio.h>
 #include <cassert>
