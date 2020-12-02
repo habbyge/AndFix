@@ -15,12 +15,6 @@
  * limitations under the License.
  */
 
-/**
- * 	art_method_replace_5_1.cpp
- *
- * @author : sanping.li@alipay.com
- *
- */
 #include <time.h>
 #include <stdlib.h>
 #include <stddef.h>

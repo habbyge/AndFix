@@ -23,12 +23,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
-/**
- * file utility
- * 
- * @author sanping.li@alipay.com
- * 
- */
 public class FileUtil {
 
 	/**

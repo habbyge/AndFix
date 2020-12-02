@@ -36,11 +36,10 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * patch manager
- *
- * @author sanping.li@alipay.com
  */
 public class PatchManager {
-    private static final String TAG = "PatchManager";
+    private static final String TAG = "AndFix.PatchManager";
+
     // patch extension
     private static final String SUFFIX = ".apatch";
     private static final String DIR = "apatch";
@@ -75,6 +74,8 @@ public class PatchManager {
         mContext = context;
         mAndFixManager = new AndFixManager(mContext);
         mPatchDir = new File(mContext.getFilesDir(), DIR);
+
+        // 线程安全的有序的集合，适用于高并发的场景
         mPatchs = new ConcurrentSkipListSet<Patch>();
         mLoaders = new ConcurrentHashMap<String, ClassLoader>();
     }
@@ -89,13 +90,11 @@ public class PatchManager {
             Log.e(TAG, "patch dir create error.");
             return;
         } else if (!mPatchDir.isDirectory()) { // not directory
-            mPatchDir.delete();
+            Log.e(TAG, "mPatchDir delete result=" + mPatchDir.delete());
             return;
         }
 
-        SharedPreferences sp = mContext.getSharedPreferences(
-                SP_NAME, Context.MODE_PRIVATE);
-
+        SharedPreferences sp = mContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         String ver = sp.getString(SP_VERSION, null);
         if (ver == null || !ver.equalsIgnoreCase(appVersion)) {
             cleanPatch();
@@ -115,11 +114,11 @@ public class PatchManager {
     /**
      * add patch file
      */
-    private Patch addPatch(File file) {
+    private Patch addPatch(File pathFile) {
         Patch patch = null;
-        if (file.getName().endsWith(SUFFIX)) {
+        if (pathFile.getName().endsWith(SUFFIX)) {
             try {
-                patch = new Patch(file);
+                patch = new Patch(pathFile);
                 mPatchs.add(patch);
             } catch (IOException e) {
                 Log.e(TAG, "addPatch", e);
@@ -139,10 +138,11 @@ public class PatchManager {
     }
 
     /**
+     * 实时打补丁的接口函数
      * add patch at runtime
-     *
      * @param path patch path
      */
+    @SuppressWarnings("unused")
     public void addPatch(String path) throws IOException {
         File src = new File(path);
         File dest = new File(mPatchDir, src.getName());
@@ -163,10 +163,10 @@ public class PatchManager {
     /**
      * remove all patchs
      */
+    @SuppressWarnings("unused")
     public void removeAllPatch() {
         cleanPatch();
-        SharedPreferences sp = mContext.getSharedPreferences(
-                SP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp = mContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         sp.edit().clear().apply();
     }
 
@@ -178,6 +178,7 @@ public class PatchManager {
      * @param patchName   patch name
      * @param classLoader classloader
      */
+    @SuppressWarnings("unused")
     public void loadPatch(String patchName, ClassLoader classLoader) {
         mLoaders.put(patchName, classLoader);
         Set<String> patchNames;
@@ -192,8 +193,9 @@ public class PatchManager {
     }
 
     /**
-     * load patch,call when application start
+     * load patch, call when application start
      */
+    @SuppressWarnings("unused")
     public void loadPatch() {
         mLoaders.put("*", mContext.getClassLoader());// wildcard
         Set<String> patchNames;
@@ -202,8 +204,7 @@ public class PatchManager {
             patchNames = patch.getPatchNames();
             for (String patchName : patchNames) {
                 classes = patch.getClasses(patchName);
-                mAndFixManager.fix(patch.getFile(), mContext.getClassLoader(),
-                        classes);
+                mAndFixManager.fix(patch.getFile(), mContext.getClassLoader(), classes);
             }
         }
     }
@@ -228,5 +229,4 @@ public class PatchManager {
             }
         }
     }
-
 }

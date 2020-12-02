@@ -15,12 +15,6 @@
  * limitations under the License.
  */
 
-/**
- * 	art_method_replace_7_0.cpp
- *
- * @author : sanping.li@alipay.com
- *
- */
 #include <time.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -44,7 +38,7 @@
 #include "common.h"
 
 /**
- * 把 dest 方法 替换为 src 方法
+ * src 替换为 dest
  */
 void replace_7_0(JNIEnv* env, jobject src, jobject dest) {
 	

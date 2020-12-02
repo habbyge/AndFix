@@ -16,12 +16,6 @@
  * limitations under the License.
  */
 
-/**
- * 	art_4_4.h
- *
- * @author : sanping.li@alipay.com
- *
- */
 #include <string.h>
 #include <jni.h>
 #include <stdio.h>

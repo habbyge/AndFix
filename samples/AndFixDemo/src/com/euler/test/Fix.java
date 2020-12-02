@@ -21,9 +21,6 @@ import android.util.Log;
 
 /**
  * new version of {@link A}
- * 
- * @author sanping.li@alipay.com
- * 
  */
 public class Fix {
 	String s = "s";

@@ -15,12 +15,6 @@
  * limitations under the License.
  */
 
-/**
- * 	dalvik_method_replace.cpp
- *
- * @author : sanping.li@alipay.com
- *
- */
 #include <time.h>
 #include <stdlib.h>
 #include <stddef.h>

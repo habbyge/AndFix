@@ -21,12 +21,6 @@ import java.lang.reflect.Method;
 
 import android.annotation.SuppressLint;
 
-/**
- * Compatibility
- * 
- * @author sanping.li@alipay.com
- * 
- */
 public class Compat {
 	public static boolean isChecked = false;
 	public static boolean isSupport = false;
@@ -58,8 +52,8 @@ public class Compat {
 		String version = null;
 		String vmName = null;
 		try {
-			Method m = Class.forName("android.os.SystemProperties").getMethod(
-					"get", String.class);
+			@SuppressLint("PrivateApi")
+			Method m = Class.forName("android.os.SystemProperties").getMethod("get", String.class);
 			version = (String) m.invoke(null, "ro.yunos.version");
 			vmName = (String) m.invoke(null, "java.vm.name");
 		} catch (Exception e) {
@@ -75,8 +69,7 @@ public class Compat {
 
 	// from android 2.3 to android 7.0
 	private static boolean isSupportSDKVersion() {
-		if (android.os.Build.VERSION.SDK_INT >= 8 &&
-				android.os.Build.VERSION.SDK_INT <= 24) {
+		if (android.os.Build.VERSION.SDK_INT >= 8 && android.os.Build.VERSION.SDK_INT <= 24) {
 			return true;
 		}
 		return false;

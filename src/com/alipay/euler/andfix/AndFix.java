@@ -23,12 +23,6 @@ import java.lang.reflect.Method;
 import android.os.Build;
 import android.util.Log;
 
-/**
- * Native interface
- * 
- * @author sanping.li@alipay.com
- * 
- */
 public class AndFix {
 	private static final String TAG = "AndFix";
 
@@ -41,11 +35,12 @@ public class AndFix {
 	}
 
 	private static native boolean setup(boolean isArt, int apilevel);
+	// dest 替换 src
 	private static native void replaceMethod(Method src, Method dest);
 	private static native void setFieldFlag(Field field);
 
 	/**
-	 * replace method's body
+	 * replace method's body: arg1 替换 arg2.
 	 * 
 	 * @param src
 	 *            source method
@@ -73,9 +68,7 @@ public class AndFix {
 	 */
 	public static Class<?> initTargetClass(Class<?> clazz) {
 		try {
-			Class<?> targetClazz = Class.forName(clazz.getName(), 
-					true, clazz.getClassLoader());
-
+			Class<?> targetClazz = Class.forName(clazz.getName(), true, clazz.getClassLoader());
 			initFields(targetClazz);
 			return targetClazz;
 		} catch (Exception e) {

@@ -16,13 +16,6 @@
  * limitations under the License.
  */
 
-/*
- * dalvik.h
- *
- *
- * @author : sanping.li@alipay.com
- *
- */
 #include <string.h>
 #include <jni.h>
 #include <stdio.h>

@@ -15,12 +15,6 @@
  * limitations under the License.
  */
 
-/**
- * 	art_method_replace.cpp
- *
- * @author : sanping.li@alipay.com
- *
- */
 #include <time.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -50,6 +44,9 @@ art_setup(JNIEnv* env, int level) {
 	return JNI_TRUE;
 }
 
+/**
+ * dest替换src
+ */
 extern void __attribute__ ((visibility ("hidden"))) 
 art_replaceMethod(JNIEnv* env, jobject src, jobject dest) {
     if (apilevel > 23) {
@@ -65,7 +62,7 @@ art_replaceMethod(JNIEnv* env, jobject src, jobject dest) {
     }
 }
 
-extern void __attribute__ ((visibility ("hidden"))) 
+extern void __attribute__ ((visibility ("hidden")))
 art_setFieldFlag(JNIEnv* env, jobject field) {
     if (apilevel > 23) {
         setFieldFlag_7_0(env, field);

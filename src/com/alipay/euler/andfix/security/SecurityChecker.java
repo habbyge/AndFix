@@ -43,12 +43,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.text.TextUtils;
 import android.util.Log;
 
-/**
- * security check
- * 
- * @author sanping.li@alipay.com
- * 
- */
 public class SecurityChecker {
 	private static final String TAG = "SecurityChecker";
 
@@ -75,21 +69,18 @@ public class SecurityChecker {
 	}
 
 	/**
-	 * @param path
+	 * @param file
 	 *            Dex file
 	 * @return true if verify fingerprint success
 	 */
 	public boolean verifyOpt(File file) {
 		String fingerprint = getFileMD5(file);
 		String saved = getFingerprint(file.getName());
-		if (fingerprint != null && TextUtils.equals(fingerprint, saved)) {
-			return true;
-		}
-		return false;
+		return fingerprint != null && TextUtils.equals(fingerprint, saved);
 	}
 
 	/**
-	 * @param path
+	 * @param file
 	 *            Dex file
 	 */
 	public void saveOptSig(File file) {
@@ -212,18 +203,13 @@ public class SecurityChecker {
 	// initialize,and check debuggable
 	private void init(Context context) {
 		try {
-			PackageManager pm = context.getPackageManager();
-			String packageName = context.getPackageName();
-
-			PackageInfo packageInfo = pm.getPackageInfo(
-					packageName, PackageManager.GET_SIGNATURES);
+			PackageInfo packageInfo = context.getPackageManager().getPackageInfo(
+					context.getPackageName(), PackageManager.GET_SIGNATURES);
 
 			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
 			ByteArrayInputStream stream = new ByteArrayInputStream(
 					packageInfo.signatures[0].toByteArray());
-
-			X509Certificate cert = (X509Certificate)
-					certFactory.generateCertificate(stream);
+			X509Certificate cert = (X509Certificate) certFactory.generateCertificate(stream);
 
 			mDebuggable = cert.getSubjectX500Principal().equals(DEBUG_DN);
 			mPublicKey = cert.getPublicKey();

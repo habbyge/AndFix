@@ -147,27 +147,27 @@ public class AndFixManager {
 	}
 
 	/**
-	 * fix
+	 * FIX
 	 * 
-	 * @param file
+	 * @param pathFile
 	 *            patch file
 	 * @param classLoader
 	 *            classloader of class that will be fixed
-	 * @param classes
+	 * @param classNames
 	 *            classes will be fixed
 	 */
 	public synchronized
-	void fix(File file, ClassLoader classLoader, List<String> classes) {
+	void fix(File pathFile, ClassLoader classLoader, List<String> classNames) {
 		if (!mSupport) {
 			return;
 		}
 
-		if (!mSecurityChecker.verifyApk(file)) { // security check fail
+		if (!mSecurityChecker.verifyApk(pathFile)) { // security check fail
 			return;
 		}
 
 		try {
-			File optfile = new File(mOptDir, file.getName());
+			File optfile = new File(mOptDir, pathFile.getName());
 			boolean saveFingerprint = true;
 			if (optfile.exists()) {
 				// need to verify fingerprint when the optimize file exist,
@@ -183,8 +183,9 @@ public class AndFixManager {
 				}
 			}
 
-			final DexFile dexFile = DexFile.loadDex(file.getAbsolutePath(),
-					optfile.getAbsolutePath(), Context.MODE_PRIVATE);
+			final DexFile dexFile = DexFile.loadDex(pathFile.getAbsolutePath(),
+													optfile.getAbsolutePath(),
+													Context.MODE_PRIVATE);
 
 			if (saveFingerprint) {
 				mSecurityChecker.saveOptSig(optfile);
@@ -193,9 +194,7 @@ public class AndFixManager {
 			ClassLoader patchClassLoader = new ClassLoader(classLoader) {
 
 				@Override
-				protected Class<?> findClass(String className)
-						throws ClassNotFoundException {
-
+				protected Class<?> findClass(String className) throws ClassNotFoundException {
 					Class<?> clazz = dexFile.loadClass(className, this);
 					final String packagePath = "com.alipay.euler.andfix";
 					if (clazz == null && className.startsWith(packagePath)) {
@@ -213,7 +212,7 @@ public class AndFixManager {
 			Class<?> clazz;
 			while (entrys.hasMoreElements()) {
 				String entry = entrys.nextElement();
-				if (classes != null && !classes.contains(entry)) {
+				if (classNames != null && !classNames.contains(entry)) {
 					continue;// skip, not need fix
 				}
 				clazz = dexFile.loadClass(entry, patchClassLoader);
@@ -233,17 +232,17 @@ public class AndFixManager {
 	private void fixClass(Class<?> clazz, ClassLoader classLoader) {
 		Method[] methods = clazz.getDeclaredMethods();
 		MethodReplace methodReplace;
-		String clz;
-		String meth;
+		String className;
+		String methodName;
 		for (Method method : methods) {
 			methodReplace = method.getAnnotation(MethodReplace.class);
 			if (methodReplace == null) {
 				continue;
 			}
-			clz = methodReplace.clazz();
-			meth = methodReplace.method();
-			if (!isEmpty(clz) && !isEmpty(meth)) {
-				replaceMethod(classLoader, clz, meth, method);
+			className = methodReplace.clazz();
+			methodName = methodReplace.method();
+			if (!isEmpty(className) && !isEmpty(methodName)) {
+				replaceMethod(classLoader, className, methodName, method);
 			}
 		}
 	}
@@ -252,25 +251,25 @@ public class AndFixManager {
 	 * replace method
 	 * 
 	 * @param classLoader classloader
-	 * @param clz class
-	 * @param meth name of target method 
-	 * @param method source method
+	 * @param className name of target class
+	 * @param methodname name of target method
+	 * @param srcMethod source method
 	 */
-	private void replaceMethod(ClassLoader classLoader, String clz,
-							   String meth, Method method) {
+	private void replaceMethod(ClassLoader classLoader, String className,
+							   String methodname, Method srcMethod) {
 
 		try {
-			String key = clz + "@" + classLoader.toString();
+			String key = className + "@" + classLoader.toString();
 			Class<?> clazz = mFixedClass.get(key);
 			if (clazz == null) { // class not load
-				Class<?> clzz = classLoader.loadClass(clz);
+				Class<?> clzz = classLoader.loadClass(className);
 				// initialize target class
 				clazz = AndFix.initTargetClass(clzz);
 			}
 			if (clazz != null) { // initialize class OK
 				mFixedClass.put(key, clazz);
-				Method src = clazz.getDeclaredMethod(meth, method.getParameterTypes());
-				AndFix.addReplaceMethod(src, method);
+				Method src = clazz.getDeclaredMethod(methodname, srcMethod.getParameterTypes());
+				AndFix.addReplaceMethod(src, srcMethod); // 前者 替换 后者
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "replaceMethod", e);

@@ -15,13 +15,6 @@
  * limitations under the License.
  */
 
-/*
- * 	common.h
- *
- *  @author : sanping.li@alipay.com
- *
- */
-
 #ifndef COMMON_H_
 #define COMMON_H_
 

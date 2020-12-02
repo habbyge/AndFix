@@ -15,11 +15,6 @@
  * limitations under the License.
  */
 
-/**
- * andfix.cpp
- * @author : sanping.li@alipay.com
- */
-
 // IP寄存器(r12)：Intra-Procedure-call Scratch Register；内部程序调用暂存寄存器
 
 /**
@@ -63,6 +58,9 @@ static jboolean setup(JNIEnv* env, jclass clazz, jboolean isart, jint apilevel) 
 	}
 }
 
+/**
+ * dest替换src
+ */
 static void replaceMethod(JNIEnv* env, jclass clazz, jobject src, jobject dest) {
 	if (isArt) {
 		art_replaceMethod(env, src, dest);

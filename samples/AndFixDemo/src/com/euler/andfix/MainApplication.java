@@ -25,14 +25,8 @@ import android.util.Log;
 
 import com.alipay.euler.andfix.patch.PatchManager;
 
-/**
- * sample application
- * 
- * @author sanping.li@alipay.com
- * 
- */
 public class MainApplication extends Application {
-	private static final String TAG = "euler";
+	private static final String TAG = "AndFix.MainApplication";
 
 	private static final String APATCH_PATH = "/out.apatch";
 	/**
@@ -43,14 +37,15 @@ public class MainApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+
 		// initialize
 		mPatchManager = new PatchManager(this);
 		mPatchManager.init("1.0");
-		Log.d(TAG, "inited.");
+		Log.i(TAG, "inited.");
 
 		// load patch
 		mPatchManager.loadPatch();
-		Log.d(TAG, "apatch loaded.");
+		Log.i(TAG, "apatch loaded.");
 
 		// add patch at runtime
 		try {
@@ -63,6 +58,5 @@ public class MainApplication extends Application {
 		} catch (IOException e) {
 			Log.e(TAG, "", e);
 		}
-
 	}
 }

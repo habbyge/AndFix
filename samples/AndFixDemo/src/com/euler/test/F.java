@@ -17,10 +17,6 @@
 
 package com.euler.test;
 
-/**
- * @author sanping.li@alipay.com
- * 
- */
 public class F {
 
 }

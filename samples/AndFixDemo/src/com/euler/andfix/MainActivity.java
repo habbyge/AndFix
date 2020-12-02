@@ -23,15 +23,8 @@ import android.util.Log;
 
 import com.euler.test.A;
 
-/**
- * sample activity
- * 
- * @author luohou
- * @author sanping.li@alipay.com
- * 
- */
 public class MainActivity extends Activity {
-	private static final String TAG = "euler";
+	private static final String TAG = "AndFix.MainActivity";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

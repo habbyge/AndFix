@@ -21,11 +21,7 @@ import android.util.Log;
 
 /**
  * the class will be fix
- * 
  * copy {@link Fix} to here, and then generate patch (.apatch file)
- * 
- * @author sanping.li@alipay.com
- * 
  */
 public class A {
 	String s = "s";
