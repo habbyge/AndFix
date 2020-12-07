@@ -29,9 +29,9 @@ namespace mirror {
 class Object {
 public:
 	void* klass_;
-
 	uint32_t monitor_;
 };
+
 class Class: public Object {
 public:
 	// defining class loader, or NULL for the "bootstrap" system loader

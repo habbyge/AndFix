@@ -61,9 +61,8 @@ static void* dvm_dlsym(void *hand, const char *name) {
  * 
  * 2，dex翻译成机器码，在libdvm模式下和Libart模式下是有区别的
  * framework/native/cmds/installd/commands.c，涉及到的命令有dex2oat和dexopt，libdvm是运行
- * 时翻译；libart是在install的时候翻译。
-
-3，这些实现的逻辑在zygote的创建有关。
+ * 时翻译；libart是在install的时候翻译.
+ * 3，这些实现的逻辑在zygote的创建有关.
  */
 extern jboolean __attribute__ ((visibility ("hidden"))) 
 dalvik_setup(JNIEnv* env, int apilevel) {
@@ -82,15 +81,14 @@ dalvik_setup(JNIEnv* env, int apilevel) {
 			return JNI_FALSE;
 		}
 
-		dvmThreadSelf_fnPtr = dvm_dlsym(dvm_hand, apilevel > 10 ? 
-				"_Z13dvmThreadSelfv" : "dvmThreadSelf");
+		dvmThreadSelf_fnPtr = dvm_dlsym(dvm_hand, apilevel > 10
+		        ? "_Z13dvmThreadSelfv" : "dvmThreadSelf");
 
 		if (!dvmThreadSelf_fnPtr) {
 			return JNI_FALSE;
 		}
 		jclass Method_Classs = env->FindClass("java/lang/reflect/Method");
-		jClassMethod = env->GetMethodID(Method_Classs, "getDeclaringClass", 
-										"()Ljava/lang/Class;");
+		jClassMethod = env->GetMethodID(Method_Classs, "getDeclaringClass", "()Ljava/lang/Class;");
 
 		return JNI_TRUE;
 	} else {
@@ -102,8 +100,7 @@ extern void __attribute__ ((visibility ("hidden")))
 dalvik_replaceMethod(JNIEnv* env, jobject src, jobject dest) {
 	jobject clazz = env->CallObjectMethod(dest, jClassMethod);
 
-	ClassObject* clz = (ClassObject*) dvmDecodeIndirectRef_fnPtr(
-			dvmThreadSelf_fnPtr(), clazz);
+	ClassObject* clz = (ClassObject*) dvmDecodeIndirectRef_fnPtr(dvmThreadSelf_fnPtr(), clazz);
 
 	clz->status = CLASS_INITIALIZED;
 

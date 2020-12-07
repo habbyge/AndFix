@@ -37,7 +37,7 @@
 
 #define JNIREG_CLASS "com/alipay/euler/andfix/AndFix"
 
-//dalvik
+// dalvik
 extern jboolean dalvik_setup(JNIEnv* env, int apilevel);
 extern void dalvik_replaceMethod(JNIEnv* env, jobject src, jobject dest);
 extern void dalvik_setFieldFlag(JNIEnv* env, jobject field);
@@ -50,7 +50,7 @@ static bool isArt;
 
 static jboolean setup(JNIEnv* env, jclass clazz, jboolean isart, jint apilevel) {
 	isArt = isart;
-	LOGD("vm is: %s , apilevel is: %i", (isArt ? "art" : "dalvik"), (int )apilevel);
+	LOGD("vm is: %s , apilevel is: %i", (isArt ? "art" : "dalvik"), (int) apilevel);
 	if (isArt) {
 		return art_setup(env, (int) apilevel);
 	} else {
@@ -122,8 +122,10 @@ static int registerNativeMethods(JNIEnv* env,
  * Register native methods for all classes we know about.
  */
 static int registerNatives(JNIEnv* env) {
+
 	if (!registerNativeMethods(env, JNIREG_CLASS, gMethods,
-			sizeof(gMethods) / sizeof(gMethods[0]))) {
+	        sizeof(gMethods) / sizeof(gMethods[0]))) {
+
 		return JNI_FALSE;
 	}
 	return JNI_TRUE;

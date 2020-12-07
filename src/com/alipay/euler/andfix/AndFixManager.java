@@ -191,6 +191,7 @@ public class AndFixManager {
 				mSecurityChecker.saveOptSig(optfile);
 			}
 
+			// 双亲机制
 			ClassLoader patchClassLoader = new ClassLoader(classLoader) {
 
 				@Override

@@ -49,6 +49,7 @@ public:
  */
 class Class: public Object {
 public:
+
 	enum Status {
 		kStatusRetired = -2, // Retired, should not be used. Use the newly cloned one instead.
 		kStatusError = -1,

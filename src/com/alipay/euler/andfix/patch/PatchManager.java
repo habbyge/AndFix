@@ -36,6 +36,9 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * patch manager
+ *
+ * Android 使用 PathClassLoader 作为其类加载器(加载已经安装到系统路径的apk包)，
+ * DexClassLoader 可以从 .jar 和 .apk 类型的文件内部加载 classes.dex文件.
  */
 public class PatchManager {
     private static final String TAG = "AndFix.PatchManager";
@@ -65,7 +68,7 @@ public class PatchManager {
     /**
      * classloaders
      */
-    private final Map<String, ClassLoader> mLoaders;
+    private final Map<String, ClassLoader> mClassLoaderMap;
 
     /**
      * @param context context
@@ -77,7 +80,7 @@ public class PatchManager {
 
         // 线程安全的有序的集合，适用于高并发的场景
         mPatchs = new ConcurrentSkipListSet<Patch>();
-        mLoaders = new ConcurrentHashMap<String, ClassLoader>();
+        mClassLoaderMap = new ConcurrentHashMap<String, ClassLoader>();
     }
 
     /**
@@ -180,7 +183,7 @@ public class PatchManager {
      */
     @SuppressWarnings("unused")
     public void loadPatch(String patchName, ClassLoader classLoader) {
-        mLoaders.put(patchName, classLoader);
+        mClassLoaderMap.put(patchName, classLoader);
         Set<String> patchNames;
         List<String> classes;
         for (Patch patch : mPatchs) {
@@ -197,7 +200,7 @@ public class PatchManager {
      */
     @SuppressWarnings("unused")
     public void loadPatch() {
-        mLoaders.put("*", mContext.getClassLoader());// wildcard
+        mClassLoaderMap.put("*", mContext.getClassLoader());// wildcard
         Set<String> patchNames;
         List<String> classes;
         for (Patch patch : mPatchs) {
@@ -218,10 +221,10 @@ public class PatchManager {
         ClassLoader classLoader;
         List<String> classes;
         for (String patchName : patchNames) {
-            if (mLoaders.containsKey("*")) {
+            if (mClassLoaderMap.containsKey("*")) {
                 classLoader = mContext.getClassLoader();
             } else {
-                classLoader = mLoaders.get(patchName);
+                classLoader = mClassLoaderMap.get(patchName);
             }
             if (classLoader != null) {
                 classes = patch.getClasses(patchName);
