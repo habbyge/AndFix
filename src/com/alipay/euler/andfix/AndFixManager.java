@@ -142,6 +142,7 @@ public class AndFixManager {
 	 * fix
 	 * @param patchPath patch path
 	 */
+	@SuppressWarnings("unused")
 	public synchronized void fix(String patchPath) {
 		fix(new File(patchPath), mContext.getClassLoader(), null);
 	}
@@ -156,8 +157,7 @@ public class AndFixManager {
 	 * @param classNames
 	 *            classes will be fixed
 	 */
-	public synchronized
-	void fix(File pathFile, ClassLoader classLoader, List<String> classNames) {
+	public synchronized void fix(File pathFile, ClassLoader classLoader, List<String> classNames) {
 		if (!mSupport) {
 			return;
 		}
@@ -191,7 +191,10 @@ public class AndFixManager {
 				mSecurityChecker.saveOptSig(optfile);
 			}
 
-			// 双亲机制
+			// 双亲机制，这里也是关键点之1/2，classLoader 决定的是该 补丁.apk 中被加载到内存中的class，
+			// 是否能够被原apk识别。
+			// TODO: 2020/12/8 按道理应该只有 DexClassLoader 才能加载 补丁.apk 中的class，Android默认的
+			// 	PathClassLoader 只能加载安装到系统路径中的apk，这里有疑问 ？？？？？？
 			ClassLoader patchClassLoader = new ClassLoader(classLoader) {
 
 				@Override

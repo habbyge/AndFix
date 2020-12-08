@@ -86,8 +86,7 @@ public class Patch implements Comparable<Patch> {
 					} else {
 						mClassesMap.put(
 								name.trim().substring(0, name.length() - 8),// remove
-								// "-Classes"
-								strings);
+								strings); // "-Classes"
 					}
 				}
 			}
@@ -126,5 +125,4 @@ public class Patch implements Comparable<Patch> {
 	public int compareTo(Patch another) {
 		return mTime.compareTo(another.getTime());
 	}
-
 }

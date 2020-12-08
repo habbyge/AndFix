@@ -6,10 +6,13 @@ buildscript {
     }
 
     dependencies {
+        //noinspection GradleDependency
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
 
+        //noinspection AndroidGradlePluginVersion
         classpath 'com.android.tools.build:gradle:3.3.1'
         classpath 'digital.wup:android-maven-publish:3.6.2'
+        //noinspection GradleDependency
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     }
 }

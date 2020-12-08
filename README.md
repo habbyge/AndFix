@@ -60,7 +60,7 @@ dependencies {
 
 ```java
 patchManager = new PatchManager(context);
-patchManager.init(appversion);//current version
+patchManager.init(appversion); // current version
 ```
 
 2. Load patch,

@@ -41,12 +41,13 @@
  * src 替换为 dest
  */
 void replace_7_0(JNIEnv* env, jobject src, jobject dest) {
-	
-	// jni的反射支持:
+	// - 这个思路的原理是(该方案成立的基石，关键点只2/2)：
+	// 1. jni 的反射支持
 	// 开发者如果知道 方法 或 域 的名称和类型，可以使用JNI来调用Java方法或访问Java域。Java反射API
 	// 提供运行时自省。JNI提供一组函数来使用Java反射API.
 	// FromReflectedMethod() 该函数是通过 java.lang.reflect.Method 或 
 	// java.lang.reflect.Constructor 来获取其反射的目标方法对应的 methodId.
+	// 2. Java层的 Method 与 C/C++层的 ArtMethod 关系
 	// 这里的思路来自于：跟踪Java层代码：Method.invoke()调用链得到：
 	// 实现在 art/runtime/native/java_lang_reflect_Method.cc 里面，这个 jni 方法最终调用了
     // art/runtime/reflection.cc 的 InvokeMethod 方法.
@@ -59,10 +60,11 @@ void replace_7_0(JNIEnv* env, jobject src, jobject dest) {
     // 接着调用：
     // object InvokeMethod(const ScopedObjectAccessAlreadyRunnable& soa, jobject javaMethod,
     //                     jobject javaReceiver, jobject javaArgs, bool accessible)
-    // 其中第2个参数 javaMethod 就是Java层我们进行反射调用的那个Method对象，在jni层反映为一个jobject；
-    // InvokeMethod 这个 native方法首先通过 mirror::ArtMethod::FromReflectedMethod 获取了 Java
-    // 对象的在 native 层的 ArtMethod 指针, ok，到这里就知道了，为啥直接通过 FromReflectedMethod()
-    // 就能获取 ArtMethod 指针了吧.
+    // 其中第2个参数 javaMethod 就是 Java 层我们进行反射调用的那个 Method 对象，在 jni 层反映为一个 jobject，
+    // InvokeMethod 这个 native 方法首先通过 mirror::ArtMethod::FromReflectedMethod 获取了 Java
+    // 对象的在 native 层的 ArtMethod 指针, ok，到这里就知道了，为啥 AndFix 这里直接通过:
+    // env->FromReflectedMethod(Method对象在jni中的表示:jobject)，就能获取 ArtMethod 指针了吧.
+    // 这就是该 "方法地址替换方案" 的来源.
 	art::mirror::ArtMethod* smeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(src);
 	art::mirror::ArtMethod* dmeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(dest);
 	// 为啥可以根据Android版本(适配性的需要)自己定义 art::mirror::ArtMethod 类，并强制类型转换？

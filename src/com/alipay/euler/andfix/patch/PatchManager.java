@@ -44,7 +44,7 @@ public class PatchManager {
     private static final String TAG = "AndFix.PatchManager";
 
     // patch extension
-    private static final String SUFFIX = ".apatch";
+    private static final String SUFFIX = ".apatch"; // patch文件的后缀
     private static final String DIR = "apatch";
     private static final String SP_NAME = "_andfix_";
     private static final String SP_VERSION = "version";
