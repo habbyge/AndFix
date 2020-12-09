@@ -101,10 +101,8 @@ static JNINativeMethod gMethods[] = {
 /*
  * Register several native methods for one class.
  */
-static int registerNativeMethods(JNIEnv* env, 
-								 const char* className, 
-								 JNINativeMethod* gMethods, 
-								 int numMethods) {
+static int registerNativeMethods(JNIEnv* env, const char* className,
+                                 JNINativeMethod* gMethods, int numMethods) {
 									 
 	jclass clazz;
 	clazz = env->FindClass(className);
