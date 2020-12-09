@@ -64,7 +64,7 @@ void replace_7_0(JNIEnv* env, jobject src, jobject dest) {
     // InvokeMethod 这个 native 方法首先通过 mirror::ArtMethod::FromReflectedMethod 获取了 Java
     // 对象的在 native 层的 ArtMethod 指针, ok，到这里就知道了，为啥 AndFix 这里直接通过:
     // env->FromReflectedMethod(Method对象在jni中的表示:jobject)，就能获取 ArtMethod 指针了吧.
-    // 这就是该 "方法地址替换方案" 的来源.
+    // 这就是该 "AndFix/iWatch等方法地址替换方案" 的来源.
 	art::mirror::ArtMethod* smeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(src);
 	art::mirror::ArtMethod* dmeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(dest);
 	// 为啥可以根据Android版本(适配性的需要)自己定义 art::mirror::ArtMethod 类，并强制类型转换？
