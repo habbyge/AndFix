@@ -80,7 +80,10 @@ void replace_7_0(JNIEnv* env, jobject src, jobject dest) {
     // 到这里，是不是发现 FromReflectedMethod() 与 InvokeMethod() 中与 ArtMethod 对象生成的代码一毛一样？！
     // 那么到这里就知道了，为啥 AndFix/iWatch 这里直接通过:
     // env->FromReflectedMethod(Method对象在jni中的表示:jobject)，就能获取 ArtMethod 指针了吧.
-    // 这就是该 "AndFix/iWatch 等方法地址替换方案" 的来源.
+    // 这就是该 "AndFix/iWatch 等方法地址替换方案" 的来源。
+    // ps: 其实在 rt/runtime/art_method.cc 中阅读 FromReflectedMethod() 函数的返回值就可以看出来，其返回的
+    // 是 ArtMethod* 指针，即 ArtMethod 对象地址.
+    // 这里都是通过在 https://cs.android.com/ 上阅读各个版本的 ASOP 源代码得到的.
 	art::mirror::ArtMethod* smeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(src);
 	art::mirror::ArtMethod* dmeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(dest);
 	// 为啥可以根据Android版本(适配性的需要)自己定义 art::mirror::ArtMethod 类，并强制类型转换？
