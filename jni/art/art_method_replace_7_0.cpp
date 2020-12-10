@@ -48,7 +48,7 @@ void replace_7_0(JNIEnv* env, jobject src, jobject dest) {
 	// FromReflectedMethod() 该函数是通过 java.lang.reflect.Method 或 
 	// java.lang.reflect.Constructor 来获取其反射的目标方法对应的 methodId.
 	// 2. Java层的 Method 与 C/C++层的 ArtMethod 关系
-	// 这里的思路来自于：跟踪Java层代码：Method.invoke()调用链得到：
+	// 这里的思路来自于：跟踪 Java 层代码: Method.invoke() 调用链得到：
 	// 实现在 art/runtime/native/java_lang_reflect_Method.cc 里面，这个 jni 方法最终调用了
     // art/runtime/reflection.cc 的 InvokeMethod 方法.
     // private native Object invokeNative(Object obj, Object[] args, Class<?> declaringClass,
@@ -58,13 +58,29 @@ void replace_7_0(JNIEnv* env, jobject src, jobject dest) {
     //                                   IllegalArgumentException,
     //                                   InvocationTargetException;
     // 接着调用：
-    // object InvokeMethod(const ScopedObjectAccessAlreadyRunnable& soa, jobject javaMethod,
-    //                     jobject javaReceiver, jobject javaArgs, bool accessible)
+    // object InvokeMethod(const ScopedObjectAccessAlreadyRunnable& soa,
+    //                    jobject javaMethod,
+    //                    jobject javaReceiver,
+    //                    jobject javaArgs,
+    //                    bool accessible)
     // 其中第2个参数 javaMethod 就是 Java 层我们进行反射调用的那个 Method 对象，在 jni 层反映为一个 jobject，
-    // InvokeMethod 这个 native 方法首先通过 mirror::ArtMethod::FromReflectedMethod 获取了 Java
-    // 对象的在 native 层的 ArtMethod 指针, ok，到这里就知道了，为啥 AndFix 这里直接通过:
+    // 相关的代码是：
+    // ObjPtr<mirror::Executable> executable = soa.Decode<mirror::Executable>(javaMethod);
+    // const bool accessible = executable->IsAccessible();
+    // ArtMethod* m = executable->GetArtMethod();
+    // OK，这里知道了 Java 层一个函数是如何在art虚拟机中的C/C++层如何调用的，那么，接下来再来看看本方案(iWatch)
+    // 使用的 FromReflectedMethod() 函数是如何工作的？
+    // 其中，jni.h 中只有 FromReflectedMethod() 函数的声明，其在 art 虚拟机中的真实实现，在:
+    // art/runtime/art_method.cc 中，源码很简单，直接贴出该函数是：
+    // ArtMethod* ArtMethod::FromReflectedMethod(const ScopedObjectAccessAlreadyRunnable& soa,
+    //                                           jobject jlr_method) {
+    //     ObjPtr<mirror::Executable> executable = soa.Decode<mirror::Executable>(jlr_method);
+    //     return executable->GetArtMethod();
+    // }
+    // 到这里，是不是发现 FromReflectedMethod() 与 InvokeMethod() 中与 ArtMethod 对象生成的代码一毛一样？！
+    // 那么到这里就知道了，为啥 AndFix/iWatch 这里直接通过:
     // env->FromReflectedMethod(Method对象在jni中的表示:jobject)，就能获取 ArtMethod 指针了吧.
-    // 这就是该 "AndFix/iWatch等方法地址替换方案" 的来源.
+    // 这就是该 "AndFix/iWatch 等方法地址替换方案" 的来源.
 	art::mirror::ArtMethod* smeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(src);
 	art::mirror::ArtMethod* dmeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(dest);
 	// 为啥可以根据Android版本(适配性的需要)自己定义 art::mirror::ArtMethod 类，并强制类型转换？
