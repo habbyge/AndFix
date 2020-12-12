@@ -33,14 +33,19 @@ namespace mirror {
 
 /**
  * 位于：art/runtime/mirror/object.h
+ * 这里只需要保持该 Object 类的大小与Android对应版本的大小相同即可
  */
 class Object {
 public:
 	// The number of vtable entries in java.lang.Object.
 	static constexpr size_t kVTableLength = 11;
+	// static Atomic<uint32_t> hash_code_seed;
 	static uint32_t hash_code_seed;
+	// The Class representing the type of the object.
+    // HeapReference<Class> klass_;
 	uint32_t klass_;
-
+    // Monitor and hash code information.
+    // uint32_t monitor_;
 	uint32_t monitor_;
 };
 
