@@ -231,9 +231,9 @@ public:
  */
 class ArtMethod {
 public:
-
 	// Field order required by test "ValidateFieldOrderOfJavaCppUnionClasses".
 	// The class we are a part of.
+	// GcRoot<mirror::Class>  类，本质上只有一个 uint32_t 类型的类
 	uint32_t declaring_class_;
 	// Access flags; low 16 bits are defined by spec.
 	uint32_t access_flags_;
@@ -266,6 +266,7 @@ public:
 
 		// Short cuts to declaring_class_->dex_cache_ member 
 		// for fast compiled code access.
+		// GcRoot<mirror::Class>* dex_cache_resolved_types_;
 		void* dex_cache_resolved_types_;
 
 		// Pointer to JNI function registered to this method, or a function 
