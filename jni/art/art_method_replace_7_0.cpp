@@ -107,7 +107,8 @@ void replace_7_0(JNIEnv* env, jobject src, jobject dest) {
 	smeth->hotness_count_ = dmeth->hotness_count_;
 
 	smeth->ptr_sized_fields_.dex_cache_resolved_methods_ =
-			dmeth->ptr_sized_fields_.dex_cache_resolved_methods_;
+	    dmeth->ptr_sized_fields_.dex_cache_resolved_methods_;
+
 	smeth->ptr_sized_fields_.dex_cache_resolved_types_ =
 			dmeth->ptr_sized_fields_.dex_cache_resolved_types_;
 
@@ -120,7 +121,6 @@ void replace_7_0(JNIEnv* env, jobject src, jobject dest) {
 	LOGD("replace_7_0: %d , %d",
 			smeth->ptr_sized_fields_.entry_point_from_quick_compiled_code_,
 			dmeth->ptr_sized_fields_.entry_point_from_quick_compiled_code_);
-
 }
 
 /**

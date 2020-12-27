@@ -36,7 +36,7 @@
 #include "dalvik.h"
 #include "common.h"
 
-static void* dvm_dlsym(void *hand, const char *name) {
+static void* dvm_dlsym(void* hand, const char* name) {
 	void* ret = dlsym(hand, name);
 	char msg[1024] = { 0 };
 	snprintf(msg, sizeof(msg) - 1, "0x%x", ret);
@@ -81,8 +81,7 @@ dalvik_setup(JNIEnv* env, int apilevel) {
 			return JNI_FALSE;
 		}
 
-		dvmThreadSelf_fnPtr = dvm_dlsym(dvm_hand, apilevel > 10
-		        ? "_Z13dvmThreadSelfv" : "dvmThreadSelf");
+		dvmThreadSelf_fnPtr = dvm_dlsym(dvm_hand, apilevel > 10 ? "_Z13dvmThreadSelfv" : "dvmThreadSelf");
 
 		if (!dvmThreadSelf_fnPtr) {
 			return JNI_FALSE;
