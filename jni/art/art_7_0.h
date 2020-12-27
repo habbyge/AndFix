@@ -33,14 +33,19 @@ namespace mirror {
 
 /**
  * 位于：art/runtime/mirror/object.h
+ * 这里只需要保持该 Object 类的大小与Android对应版本的大小相同即可
  */
 class Object {
 public:
 	// The number of vtable entries in java.lang.Object.
 	static constexpr size_t kVTableLength = 11;
+	// static Atomic<uint32_t> hash_code_seed;
 	static uint32_t hash_code_seed;
+	// The Class representing the type of the object.
+    // HeapReference<Class> klass_;
 	uint32_t klass_;
-
+    // Monitor and hash code information.
+    // uint32_t monitor_;
 	uint32_t monitor_;
 };
 
@@ -226,9 +231,9 @@ public:
  */
 class ArtMethod {
 public:
-
 	// Field order required by test "ValidateFieldOrderOfJavaCppUnionClasses".
 	// The class we are a part of.
+	// GcRoot<mirror::Class>  类，本质上只有一个 uint32_t 类型的类
 	uint32_t declaring_class_;
 	// Access flags; low 16 bits are defined by spec.
 	uint32_t access_flags_;
@@ -261,6 +266,7 @@ public:
 
 		// Short cuts to declaring_class_->dex_cache_ member 
 		// for fast compiled code access.
+		// GcRoot<mirror::Class>* dex_cache_resolved_types_;
 		void* dex_cache_resolved_types_;
 
 		// Pointer to JNI function registered to this method, or a function 
