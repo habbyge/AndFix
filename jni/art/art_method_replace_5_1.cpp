@@ -43,13 +43,13 @@ void replace_5_1(JNIEnv* env, jobject src, jobject dest) {
 
 	// for plugin classloader
 	reinterpret_cast<art::mirror::Class*>(dmeth->declaring_class_)->class_loader_ =
-		reinterpret_cast<art::mirror::Class*>(smeth->declaring_class_)->class_loader_;
+		  reinterpret_cast<art::mirror::Class*>(smeth->declaring_class_)->class_loader_;
 
 	reinterpret_cast<art::mirror::Class*>(dmeth->declaring_class_)->clinit_thread_id_ =
-		reinterpret_cast<art::mirror::Class*>(smeth->declaring_class_)->clinit_thread_id_;
+		  reinterpret_cast<art::mirror::Class*>(smeth->declaring_class_)->clinit_thread_id_;
 
 	reinterpret_cast<art::mirror::Class*>(dmeth->declaring_class_)->status_ = 
-		reinterpret_cast<art::mirror::Class*>(smeth->declaring_class_)->status_-1;
+		  reinterpret_cast<art::mirror::Class*>(smeth->declaring_class_)->status_-1;
 
 	//for reflection invoke
 	reinterpret_cast<art::mirror::Class*>(dmeth->declaring_class_)->super_class_ = 0;

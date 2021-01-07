@@ -26,7 +26,6 @@ import java.nio.channels.FileChannel;
 public class FileUtil {
 
 	/**
-	 * 
 	 * copy file
 	 * 
 	 * @param src

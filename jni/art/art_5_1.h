@@ -28,12 +28,12 @@ namespace art {
 namespace mirror {
 class Object {
 public:
-	// The number of vtable entries in java.lang.Object.
-	static constexpr size_t kVTableLength = 11;
-	static uint32_t hash_code_seed;
-	uint32_t klass_;
+  // The number of vtable entries in java.lang.Object.
+  static constexpr size_t kVTableLength = 11;
+  static uint32_t hash_code_seed;
+  uint32_t klass_;
 
-	uint32_t monitor_;
+  uint32_t monitor_;
 };
 class Class: public Object {
 public:

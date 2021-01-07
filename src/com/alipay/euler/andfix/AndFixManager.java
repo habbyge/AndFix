@@ -75,8 +75,7 @@ import dalvik.system.DexFile;
  * Andfix 里面的这个 ArtMethod 自然是遵照 Android 虚拟机 art 源码里面的 ArtMethod 构建的), 但
  * 是厂商是可以任意修改这部分代码，因此这里才是兼容性问题的根源.
  *
- * 突破底层结构的差异:
- *
+ * 突破底层结构的差异
  */
 public class AndFixManager {
 	private static final String TAG = "AndFixManager";

@@ -49,31 +49,30 @@ art_setup(JNIEnv* env, int level) {
  */
 extern void __attribute__ ((visibility ("hidden"))) 
 art_replaceMethod(JNIEnv* env, jobject src, jobject dest) {
-    if (apilevel > 23) {
-        replace_7_0(env, src, dest);
-    } else if (apilevel > 22) {
+  if (apilevel > 23) {
+    replace_7_0(env, src, dest);
+  } else if (apilevel > 22) {
 		replace_6_0(env, src, dest);
 	} else if (apilevel > 21) {
 		replace_5_1(env, src, dest);
 	} else if (apilevel > 19) {
 		replace_5_0(env, src, dest);
-    } else {
-        replace_4_4(env, src, dest);
-    }
+  } else {
+    replace_4_4(env, src, dest);
+  }
 }
 
 extern void __attribute__ ((visibility ("hidden")))
 art_setFieldFlag(JNIEnv* env, jobject field) {
-    if (apilevel > 23) {
-        setFieldFlag_7_0(env, field);
-    } else if (apilevel > 22) {
-		setFieldFlag_6_0(env, field);
-	} else if (apilevel > 21) {
-		setFieldFlag_5_1(env, field);
-	} else  if (apilevel > 19) {
-		setFieldFlag_5_0(env, field);
-    }else{
-        setFieldFlag_4_4(env, field);
-    }
+  if (apilevel > 23) {
+    setFieldFlag_7_0(env, field);
+  } else if (apilevel > 22) {
+    setFieldFlag_6_0(env, field);
+  } else if (apilevel > 21) {
+    setFieldFlag_5_1(env, field);
+  } else  if (apilevel > 19) {
+    setFieldFlag_5_0(env, field);
+  } else {
+    setFieldFlag_4_4(env, field);
+  }
 }
-

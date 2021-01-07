@@ -57,14 +57,10 @@ public class Compat {
 			version = (String) m.invoke(null, "ro.yunos.version");
 			vmName = (String) m.invoke(null, "java.vm.name");
 		} catch (Exception e) {
-			// nothing todo
+			// nothing
 		}
-		if ((vmName != null && vmName.toLowerCase().contains("lemur"))
-				|| (version != null && version.trim().length() > 0)) {
-			return true;
-		} else {
-			return false;
-		}
+		return (vmName != null && vmName.toLowerCase().contains("lemur"))
+				|| (version != null && version.trim().length() > 0);
 	}
 
 	// from android 2.3 to android 7.0

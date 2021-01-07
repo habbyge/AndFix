@@ -82,21 +82,21 @@ static void setFieldFlag(JNIEnv* env, jclass clazz, jobject field) {
  * JNI registration.
  */
 static JNINativeMethod gMethods[] = {
-/* name, signature, funcPtr */
-    {
-        "setup",
-        "(ZI)Z",
-        (void*) setup
-    },
-    {
-        "replaceMethod",
-		"(Ljava/lang/reflect/Method;Ljava/lang/reflect/Method;)V",
-		(void*) replaceMethod
+  /* name, signature, funcPtr */
+  {
+    "setup",
+    "(ZI)Z",
+    (void*) setup
+  },
+  {
+    "replaceMethod",
+    "(Ljava/lang/reflect/Method;Ljava/lang/reflect/Method;)V",
+    (void*) replaceMethod
 	},
 	{
-	    "setFieldFlag",
-		"(Ljava/lang/reflect/Field;)V",
-		(void*) setFieldFlag
+	  "setFieldFlag",
+	  "(Ljava/lang/reflect/Field;)V",
+	  (void*) setFieldFlag
 	},
 };
 
@@ -122,10 +122,7 @@ static int registerNativeMethods(JNIEnv* env, const char* className,
  * Register native methods for all classes we know about.
  */
 static int registerNatives(JNIEnv* env) {
-
-	if (!registerNativeMethods(env, JNIREG_CLASS, gMethods,
-	        sizeof(gMethods) / sizeof(gMethods[0]))) {
-
+	if (!registerNativeMethods(env, JNIREG_CLASS, gMethods, sizeof(gMethods) / sizeof(gMethods[0]))) {
 		return JNI_FALSE;
 	}
 	return JNI_TRUE;

@@ -50,8 +50,7 @@ public class SecurityChecker {
 	private static final String SP_MD5 = "-md5";
 	private static final String CLASSES_DEX = "classes.dex";
 
-	private static final X500Principal DEBUG_DN = new X500Principal(
-			"CN=Android Debug,O=Android,C=US");
+	private static final X500Principal DEBUG_DN = new X500Principal("CN=Android Debug,O=Android,C=US");
 
 	private final Context mContext;
 	/**
@@ -175,8 +174,9 @@ public class SecurityChecker {
 			return null;
 		} finally {
 			try {
-				if (in != null)
+				if (in != null) {
 					in.close();
+				}
 			} catch (IOException e) {
 				Log.e(TAG, "getFileMD5", e);
 			}
@@ -187,9 +187,8 @@ public class SecurityChecker {
 
 	// md5 as fingerprint
 	private void saveFingerprint(String fileName, String md5) {
-		SharedPreferences sharedPreferences = mContext.getSharedPreferences(
-				SP_NAME, Context.MODE_PRIVATE);
-		Editor editor = sharedPreferences.edit();
+		SharedPreferences sp = mContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+		Editor editor = sp.edit();
 		editor.putString(fileName + SP_MD5, md5);
 		editor.commit();
 	}
@@ -207,9 +206,8 @@ public class SecurityChecker {
 					context.getPackageName(), PackageManager.GET_SIGNATURES);
 
 			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-			ByteArrayInputStream stream = new ByteArrayInputStream(
-					packageInfo.signatures[0].toByteArray());
-			X509Certificate cert = (X509Certificate) certFactory.generateCertificate(stream);
+			ByteArrayInputStream s = new ByteArrayInputStream(packageInfo.signatures[0].toByteArray());
+			X509Certificate cert = (X509Certificate) certFactory.generateCertificate(s);
 
 			mDebuggable = cert.getSubjectX500Principal().equals(DEBUG_DN);
 			mPublicKey = cert.getPublicKey();
@@ -219,5 +217,4 @@ public class SecurityChecker {
 			Log.e(TAG, "init", e);
 		}
 	}
-
 }
