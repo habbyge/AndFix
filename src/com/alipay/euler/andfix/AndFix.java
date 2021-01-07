@@ -42,10 +42,8 @@ public class AndFix {
 	/**
 	 * replace method's body: arg1 替换 arg2.
 	 * 
-	 * @param src
-	 *            source method
-	 * @param dest
-	 *            target method
+	 * @param src source method
+	 * @param dest target method
 	 * 
 	 */
 	public static void addReplaceMethod(Method src, Method dest) {
@@ -62,8 +60,7 @@ public class AndFix {
 	 * initialize the target class, and modify access flag of class’ fields to
 	 * public
 	 * 
-	 * @param clazz
-	 *            target class
+	 * @param clazz target class
 	 * @return initialized class
 	 */
 	public static Class<?> initTargetClass(Class<?> clazz) {
@@ -79,9 +76,8 @@ public class AndFix {
 
 	/**
 	 * modify access flag of class’ fields to public
-	 * 
-	 * @param clazz
-	 *            class
+	 *
+	 * @param clazz class
 	 */
 	private static void initFields(Class<?> clazz) {
 		Field[] srcFields = clazz.getDeclaredFields();
