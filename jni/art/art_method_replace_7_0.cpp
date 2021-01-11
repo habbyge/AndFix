@@ -71,11 +71,11 @@ void replace_7_0(JNIEnv* env, jobject src, jobject dest) {
   // OK，这里知道了 Java 层一个函数是如何在art虚拟机中的C/C++层如何调用的，那么，接下来再来看看本方案(iWatch)
   // 使用的 FromReflectedMethod() 函数是如何工作的？
   // 其中，jni.h 中只有 FromReflectedMethod() 函数的声明，其在 art 虚拟机中的真实实现，在:
-  // art/runtime/art_method.cc/art_method.h 中，源码很简单，直接贴出该函数是：
-  // ArtMethod* ArtMethod::FromReflectedMethod(const ScopedObjectAccessAlreadyRunnable& soa,
-  //                                           jobject jlr_method) {
-  //     ObjPtr<mirror::Executable> executable = soa.Decode<mirror::Executable>(jlr_method);
-  //     return executable->GetArtMethod();
+  // art/runtime/jni/jni_internal.cc 中，源码很简单，直接贴出该函数是：
+  // static jmethodID FromReflectedMethod(JNIEnv* env, jobject jlr_method) {
+  //   CHECK_NON_NULL_ARGUMENT(jlr_method);
+  //   ScopedObjectAccess soa(env);
+  //   return jni::EncodeArtMethod<kEnableIndexIds>(ArtMethod::FromReflectedMethod(soa, jlr_method));
   // }
   // 到这里，是不是发现 FromReflectedMethod() 与 InvokeMethod() 中与 ArtMethod 对象生成的代码一毛一样？！
   // 那么到这里就知道了，为啥 AndFix/iWatch 这里直接通过:

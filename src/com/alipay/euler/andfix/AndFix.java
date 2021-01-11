@@ -57,8 +57,7 @@ public class AndFix {
 	}
 
 	/**
-	 * initialize the target class, and modify access flag of class’ fields to
-	 * public
+	 * initialize the target class, and modify access flag of class’ fields to public
 	 * 
 	 * @param clazz target class
 	 * @return initialized class
