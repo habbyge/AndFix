@@ -51,7 +51,7 @@ extern void art_setFieldFlag(JNIEnv* env, jobject field);
 static bool isArt;
 
 static jboolean setup(JNIEnv* env, jclass clazz, jboolean isart, jint apilevel) {
-	isArt = isart;
+    isArt = isart;
 	LOGD("vm is: %s , apilevel is: %i", (isArt ? "art" : "dalvik"), (int) apilevel);
 	if (isArt) {
 		return art_setup(env, (int) apilevel);
