@@ -62,6 +62,10 @@ art_replaceMethod(JNIEnv* env, jobject src, jobject dest) {
   }
 }
 
+/**
+ * 这里为啥需要设置被修复方法(原始方法)所在的 class 中的所有 field 字段为 public ？？？？？？
+ * 答案：在 apktools 中会修改修复类、方法的后缀，加上 "_CF"，所以修改后，才能在新的修复类中访问原始类中的字段.
+ */
 extern void __attribute__ ((visibility ("hidden")))
 art_setFieldFlag(JNIEnv* env, jobject field) {
   if (apilevel > 23) {
