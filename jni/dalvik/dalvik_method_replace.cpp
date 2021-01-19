@@ -34,7 +34,7 @@
 #include <sys/wait.h>
 
 #include "dalvik.h"
-#include "common.h"
+#include "../common.h"
 
 static void* dvm_dlsym(void* hand, const char* name) {
 	void* ret = dlsym(hand, name);
@@ -73,15 +73,17 @@ dalvik_setup(JNIEnv* env, int apilevel) {
 	// 3. 基地址 + 偏移量 即是我们需要的符号地址: ArtMethod/ArtField.
 	void* dvm_hand = dlopen("libdvm.so", RTLD_NOW); // dl打开dalvik虚拟机
 	if (dvm_hand) {
-		dvmDecodeIndirectRef_fnPtr = dvm_dlsym(dvm_hand, apilevel > 10 ?
-		        "_Z20dvmDecodeIndirectRefP6ThreadP8_jobject" :
-		        "dvmDecodeIndirectRef");
+		dvmDecodeIndirectRef_fnPtr = reinterpret_cast<dvmDecodeIndirectRef_func>(dvm_dlsym(
+				dvm_hand, apilevel > 10
+						? "_Z20dvmDecodeIndirectRefP6ThreadP8_jobject"
+						: "dvmDecodeIndirectRef"));
 
 		if (!dvmDecodeIndirectRef_fnPtr) {
 			return JNI_FALSE;
 		}
 
-		dvmThreadSelf_fnPtr = dvm_dlsym(dvm_hand, apilevel > 10 ? "_Z13dvmThreadSelfv" : "dvmThreadSelf");
+		dvmThreadSelf_fnPtr = reinterpret_cast<dvmThreadSelf_func>(dvm_dlsym(
+				dvm_hand, apilevel > 10 ? "_Z13dvmThreadSelfv" : "dvmThreadSelf"));
 
 		if (!dvmThreadSelf_fnPtr) {
 			return JNI_FALSE;
@@ -99,9 +101,10 @@ extern void __attribute__ ((visibility ("hidden")))
 dalvik_replaceMethod(JNIEnv* env, jobject src, jobject dest) {
 	jobject clazz = env->CallObjectMethod(dest, jClassMethod);
 
+	// Dalvik中，Class对象对应的是 DvmObject结构体
 	ClassObject* clz = (ClassObject*) dvmDecodeIndirectRef_fnPtr(dvmThreadSelf_fnPtr(), clazz);
 
-	clz->status = CLASS_INITIALIZED;
+	clz->status = CLASS_INITIALIZED; // 标记该Class对象初始化完毕
 
 	Method* meth = (Method*) env->FromReflectedMethod(src);
 	Method* target = (Method*) env->FromReflectedMethod(dest);
@@ -117,7 +120,7 @@ dalvik_replaceMethod(JNIEnv* env, jobject src, jobject dest) {
 
 	meth->prototype = target->prototype;
 	meth->insns = target->insns;
-	meth->nativeFunc = target->nativeFunc;
+	meth->nativeFunc = target->nativeFunc; // 关键的一步
 }
 
 extern void dalvik_setFieldFlag(JNIEnv* env, jobject field) {

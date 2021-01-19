@@ -24,7 +24,7 @@
 
 #include <stdint.h>    /* C99 */
 
-#include "common.h"
+#include "../common.h"
 
 typedef uint8_t u1;
 typedef uint16_t u2;
