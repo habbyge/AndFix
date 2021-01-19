@@ -51,7 +51,9 @@ public class Patch implements Comparable<Patch> {
 	 */
 	private Date mTime;
 	/**
-	 * classes of patch: <pathName, List<该patch文件中包括的所有class文件名>>
+	 * classes of patch
+	 * <PatchName, List<该patch文件中包括的所有class文件名>>
+	 * 所有需要修复的类名之后保存到这个列表中，后面会通过修复包名称获取到他的修复类名称列表
 	 */
 	private Map<String, List<String>> mClassesMap;
 
@@ -60,6 +62,17 @@ public class Patch implements Comparable<Patch> {
 		init();
 	}
 
+	/**
+	 * 每个 修复包.apatch 其实是一个 JarFile 文件，这里会去读取 MF 文件中的信息，然后获取到本次需要修复的类信息，
+	 * 需要修复的类名称直接使用逗号分割，META-INF/PATCH.MF文件格式如下:
+	 * Manifest-Version: 1.0
+	 * Patch-Name: app-release-fix
+	 * Created-Time: 9 Nov 2020 01:53:27 GMT
+	 * From-File: app-release-fix.apk
+	 * To-File: app-release-online.apk
+	 * Patch-Classes: cn.wjdiankong.andfix.Utils_CF
+	 * Created-By: 1.0(ApkPatch)
+	 */
 	private void init() throws IOException {
 		JarFile jarFile = null;
 		InputStream inputStream = null;
@@ -69,24 +82,23 @@ public class Patch implements Comparable<Patch> {
 			inputStream = jarFile.getInputStream(entry);
 			Manifest manifest = new Manifest(inputStream);
 			Attributes mainAttributes = manifest.getMainAttributes();
-			mName = mainAttributes.getValue(PATCH_NAME);
-			mTime = new Date(mainAttributes.getValue(CREATED_TIME));
+			mName = mainAttributes.getValue(PATCH_NAME); // 补丁包名：app-release-fix
+			mTime = new Date(mainAttributes.getValue(CREATED_TIME)); // 9 Nov 2020 01:53:27 GMT
 
 			mClassesMap = new HashMap<String, List<String>>();
+
 			Attributes.Name attrName;
 			String name;
 			List<String> strings;
 			for (Object attr : mainAttributes.keySet()) {
 				attrName = (Attributes.Name) attr;
 				name = attrName.toString();
-				if (name.endsWith(CLASSES)) {
+				if (name.endsWith(CLASSES)) { // -Classes，说明是类
 					strings = Arrays.asList(mainAttributes.getValue(attrName).split(","));
-					if (name.equalsIgnoreCase(PATCH_CLASSES)) {
-						mClassesMap.put(mName, strings);
-					} else {
-						mClassesMap.put(
-							name.trim().substring(0, name.length() - 8),// remove
-							strings); // "-Classes"
+					if (name.equalsIgnoreCase(PATCH_CLASSES)) { // Patch-Classes
+						mClassesMap.put(mName, strings); // 补丁(patch)包中包含的需要素有修复类
+					} else { // remove count(-Classes)
+						mClassesMap.put(name.trim().substring(0, name.length() - 8), strings);
 					}
 				}
 			}

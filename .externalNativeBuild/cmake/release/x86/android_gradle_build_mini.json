@@ -1,0 +1,18 @@
+{
+  "buildFiles": [
+    "/Users/habbyge/AndFix/jni/CMakeLists.txt",
+    "/Users/habbyge/AndFix/jni/../../Library/Android/sdk/ndk/21.3.6528147/build/cmake/android.toolchain.cmake",
+    "/Users/habbyge/AndFix/jni/../../Library/Android/sdk/ndk/21.3.6528147/build/cmake/platforms.cmake"
+  ],
+  "cleanCommands": [
+    "/Users/habbyge/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake --build /Users/habbyge/AndFix/.externalNativeBuild/cmake/release/x86 --target clean"
+  ],
+  "libraries": {
+    "andfix-Release-x86": {
+      "artifactName": "andfix",
+      "buildCommand": "/Users/habbyge/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake --build /Users/habbyge/AndFix/.externalNativeBuild/cmake/release/x86 --target andfix",
+      "abi": "x86",
+      "output": "/Users/habbyge/AndFix/libs/x86/libandfix.so"
+    }
+  }
+}

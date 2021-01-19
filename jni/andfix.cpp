@@ -29,6 +29,9 @@
  * Andfix 可以支持的补丁场景相对有限，仅仅可以使用它来修复特定问题.
  *
  * TODO: inline 方法如何replace ？ 这里处理不了，局限性之一
+ *
+ * AndFix 的分析参考:
+ * https://www.ctolib.com/topics-105786.html
  */
 
 #include <jni.h>

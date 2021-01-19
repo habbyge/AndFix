@@ -26,7 +26,7 @@ public class Compat {
 	public static boolean isSupport = false;
 
 	/**
-	 * whether support on the device
+	 * whether support on the device, 判断当前环境是否支持热修复
 	 * 
 	 * @return true if the device support AndFix
 	 */

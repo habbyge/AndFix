@@ -84,8 +84,8 @@ void replace_7_0(JNIEnv* env, jobject src, jobject dest) {
   // ps: 其实在 rt/runtime/art_method.cc 中阅读 FromReflectedMethod() 函数的返回值就可以看出来，其返回的
   // 是 ArtMethod* 指针，即 ArtMethod 对象地址.
   // 这里都是通过在 https://cs.android.com/ 上阅读各个版本的 ASOP 源代码得到的.
-	art::mirror::ArtMethod* smeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(src);
-	art::mirror::ArtMethod* dmeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(dest);
+	auto* smeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(src);
+	auto* dmeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(dest);
 	// 为啥可以根据Android版本(适配性的需要)自己定义 art::mirror::ArtMethod 类，并强制类型转换？
 	// 我的理解是：对于二进制的字节码Elf文件来说，其实 ArtMethod的类路径是没有意义的，更进一步说，
 	// "这块儿存储大小" 符合 ArtMethod 的大小即可，且该类中的的各个字段，同样满足 "这块儿存储空间"的要求。
@@ -94,7 +94,8 @@ void replace_7_0(JNIEnv* env, jobject src, jobject dest) {
 			reinterpret_cast<art::mirror::Class*>(smeth->declaring_class_)->clinit_thread_id_;
 
 	reinterpret_cast<art::mirror::Class*>(dmeth->declaring_class_)->status_ =
-			reinterpret_cast<art::mirror::Class*>(smeth->declaring_class_)->status_ -1;
+			static_cast<art::mirror::Class::Status>(
+					reinterpret_cast<art::mirror::Class*>(smeth->declaring_class_)->status_ - 1);
 			
 	// for reflection invoke
 	reinterpret_cast<art::mirror::Class*>(dmeth->declaring_class_)->super_class_ = 0;
@@ -122,7 +123,7 @@ void replace_7_0(JNIEnv* env, jobject src, jobject dest) {
  * @param field java 层的 Fieild 类型的对象.
  */
 void setFieldFlag_7_0(JNIEnv* env, jobject field) {
-	art::mirror::ArtField* artField = (art::mirror::ArtField*) env->FromReflectedField(field);
+	auto* artField = (art::mirror::ArtField*) env->FromReflectedField(field);
 	artField->access_flags_ = artField->access_flags_ & (~0x0002) | 0x0001;
 	LOGD("setFieldFlag_7_0: %d ", artField->access_flags_);
 }

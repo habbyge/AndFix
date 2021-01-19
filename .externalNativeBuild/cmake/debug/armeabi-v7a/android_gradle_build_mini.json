@@ -1,0 +1,18 @@
+{
+  "buildFiles": [
+    "/Users/habbyge/AndFix/jni/CMakeLists.txt",
+    "/Users/habbyge/AndFix/jni/../../Library/Android/sdk/ndk/21.3.6528147/build/cmake/android.toolchain.cmake",
+    "/Users/habbyge/AndFix/jni/../../Library/Android/sdk/ndk/21.3.6528147/build/cmake/platforms.cmake"
+  ],
+  "cleanCommands": [
+    "/Users/habbyge/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake --build /Users/habbyge/AndFix/.externalNativeBuild/cmake/debug/armeabi-v7a --target clean"
+  ],
+  "libraries": {
+    "andfix-Debug-armeabi-v7a": {
+      "artifactName": "andfix",
+      "buildCommand": "/Users/habbyge/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake --build /Users/habbyge/AndFix/.externalNativeBuild/cmake/debug/armeabi-v7a --target andfix",
+      "abi": "armeabi-v7a",
+      "output": "/Users/habbyge/AndFix/libs/armeabi-v7a/libandfix.so"
+    }
+  }
+}

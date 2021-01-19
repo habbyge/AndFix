@@ -1,0 +1,49 @@
+[
+{
+  "directory": "/Users/habbyge/AndFix/.externalNativeBuild/cmake/release/armeabi-v7a",
+  "command": "/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=armv7-none-linux-androideabi22 --gcc-toolchain=/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -Dandfix_EXPORTS -I/Users/habbyge/AndFix/jni/art/art.h -I/Users/habbyge/AndFix/jni/art/art_4_4.h -I/Users/habbyge/AndFix/jni/art/art_5_0.h -I/Users/habbyge/AndFix/jni/art/art_5_1.h -I/Users/habbyge/AndFix/jni/art/art_6_0.h -I/Users/habbyge/AndFix/jni/art/art_7_0.h -I/Users/habbyge/AndFix/jni/dalvik/dalvik.h  -std=c++11 -Oz -DNDEBUG  -fPIC   -o CMakeFiles/andfix.dir/andfix.cpp.o -c /Users/habbyge/AndFix/jni/andfix.cpp",
+  "file": "/Users/habbyge/AndFix/jni/andfix.cpp"
+},
+
+{
+  "directory": "/Users/habbyge/AndFix/.externalNativeBuild/cmake/release/armeabi-v7a",
+  "command": "/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=armv7-none-linux-androideabi22 --gcc-toolchain=/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -Dandfix_EXPORTS -I/Users/habbyge/AndFix/jni/art/art.h -I/Users/habbyge/AndFix/jni/art/art_4_4.h -I/Users/habbyge/AndFix/jni/art/art_5_0.h -I/Users/habbyge/AndFix/jni/art/art_5_1.h -I/Users/habbyge/AndFix/jni/art/art_6_0.h -I/Users/habbyge/AndFix/jni/art/art_7_0.h -I/Users/habbyge/AndFix/jni/dalvik/dalvik.h  -std=c++11 -Oz -DNDEBUG  -fPIC   -o CMakeFiles/andfix.dir/art/art_method_replace.cpp.o -c /Users/habbyge/AndFix/jni/art/art_method_replace.cpp",
+  "file": "/Users/habbyge/AndFix/jni/art/art_method_replace.cpp"
+},
+
+{
+  "directory": "/Users/habbyge/AndFix/.externalNativeBuild/cmake/release/armeabi-v7a",
+  "command": "/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=armv7-none-linux-androideabi22 --gcc-toolchain=/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -Dandfix_EXPORTS -I/Users/habbyge/AndFix/jni/art/art.h -I/Users/habbyge/AndFix/jni/art/art_4_4.h -I/Users/habbyge/AndFix/jni/art/art_5_0.h -I/Users/habbyge/AndFix/jni/art/art_5_1.h -I/Users/habbyge/AndFix/jni/art/art_6_0.h -I/Users/habbyge/AndFix/jni/art/art_7_0.h -I/Users/habbyge/AndFix/jni/dalvik/dalvik.h  -std=c++11 -Oz -DNDEBUG  -fPIC   -o CMakeFiles/andfix.dir/art/art_method_replace_4_4.cpp.o -c /Users/habbyge/AndFix/jni/art/art_method_replace_4_4.cpp",
+  "file": "/Users/habbyge/AndFix/jni/art/art_method_replace_4_4.cpp"
+},
+
+{
+  "directory": "/Users/habbyge/AndFix/.externalNativeBuild/cmake/release/armeabi-v7a",
+  "command": "/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=armv7-none-linux-androideabi22 --gcc-toolchain=/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -Dandfix_EXPORTS -I/Users/habbyge/AndFix/jni/art/art.h -I/Users/habbyge/AndFix/jni/art/art_4_4.h -I/Users/habbyge/AndFix/jni/art/art_5_0.h -I/Users/habbyge/AndFix/jni/art/art_5_1.h -I/Users/habbyge/AndFix/jni/art/art_6_0.h -I/Users/habbyge/AndFix/jni/art/art_7_0.h -I/Users/habbyge/AndFix/jni/dalvik/dalvik.h  -std=c++11 -Oz -DNDEBUG  -fPIC   -o CMakeFiles/andfix.dir/art/art_method_replace_5_0.cpp.o -c /Users/habbyge/AndFix/jni/art/art_method_replace_5_0.cpp",
+  "file": "/Users/habbyge/AndFix/jni/art/art_method_replace_5_0.cpp"
+},
+
+{
+  "directory": "/Users/habbyge/AndFix/.externalNativeBuild/cmake/release/armeabi-v7a",
+  "command": "/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=armv7-none-linux-androideabi22 --gcc-toolchain=/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -Dandfix_EXPORTS -I/Users/habbyge/AndFix/jni/art/art.h -I/Users/habbyge/AndFix/jni/art/art_4_4.h -I/Users/habbyge/AndFix/jni/art/art_5_0.h -I/Users/habbyge/AndFix/jni/art/art_5_1.h -I/Users/habbyge/AndFix/jni/art/art_6_0.h -I/Users/habbyge/AndFix/jni/art/art_7_0.h -I/Users/habbyge/AndFix/jni/dalvik/dalvik.h  -std=c++11 -Oz -DNDEBUG  -fPIC   -o CMakeFiles/andfix.dir/art/art_method_replace_5_1.cpp.o -c /Users/habbyge/AndFix/jni/art/art_method_replace_5_1.cpp",
+  "file": "/Users/habbyge/AndFix/jni/art/art_method_replace_5_1.cpp"
+},
+
+{
+  "directory": "/Users/habbyge/AndFix/.externalNativeBuild/cmake/release/armeabi-v7a",
+  "command": "/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=armv7-none-linux-androideabi22 --gcc-toolchain=/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -Dandfix_EXPORTS -I/Users/habbyge/AndFix/jni/art/art.h -I/Users/habbyge/AndFix/jni/art/art_4_4.h -I/Users/habbyge/AndFix/jni/art/art_5_0.h -I/Users/habbyge/AndFix/jni/art/art_5_1.h -I/Users/habbyge/AndFix/jni/art/art_6_0.h -I/Users/habbyge/AndFix/jni/art/art_7_0.h -I/Users/habbyge/AndFix/jni/dalvik/dalvik.h  -std=c++11 -Oz -DNDEBUG  -fPIC   -o CMakeFiles/andfix.dir/art/art_method_replace_6_0.cpp.o -c /Users/habbyge/AndFix/jni/art/art_method_replace_6_0.cpp",
+  "file": "/Users/habbyge/AndFix/jni/art/art_method_replace_6_0.cpp"
+},
+
+{
+  "directory": "/Users/habbyge/AndFix/.externalNativeBuild/cmake/release/armeabi-v7a",
+  "command": "/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=armv7-none-linux-androideabi22 --gcc-toolchain=/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -Dandfix_EXPORTS -I/Users/habbyge/AndFix/jni/art/art.h -I/Users/habbyge/AndFix/jni/art/art_4_4.h -I/Users/habbyge/AndFix/jni/art/art_5_0.h -I/Users/habbyge/AndFix/jni/art/art_5_1.h -I/Users/habbyge/AndFix/jni/art/art_6_0.h -I/Users/habbyge/AndFix/jni/art/art_7_0.h -I/Users/habbyge/AndFix/jni/dalvik/dalvik.h  -std=c++11 -Oz -DNDEBUG  -fPIC   -o CMakeFiles/andfix.dir/art/art_method_replace_7_0.cpp.o -c /Users/habbyge/AndFix/jni/art/art_method_replace_7_0.cpp",
+  "file": "/Users/habbyge/AndFix/jni/art/art_method_replace_7_0.cpp"
+},
+
+{
+  "directory": "/Users/habbyge/AndFix/.externalNativeBuild/cmake/release/armeabi-v7a",
+  "command": "/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=armv7-none-linux-androideabi22 --gcc-toolchain=/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/habbyge/Library/Android/sdk/ndk/21.3.6528147/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -Dandfix_EXPORTS -I/Users/habbyge/AndFix/jni/art/art.h -I/Users/habbyge/AndFix/jni/art/art_4_4.h -I/Users/habbyge/AndFix/jni/art/art_5_0.h -I/Users/habbyge/AndFix/jni/art/art_5_1.h -I/Users/habbyge/AndFix/jni/art/art_6_0.h -I/Users/habbyge/AndFix/jni/art/art_7_0.h -I/Users/habbyge/AndFix/jni/dalvik/dalvik.h  -std=c++11 -Oz -DNDEBUG  -fPIC   -o CMakeFiles/andfix.dir/dalvik/dalvik_method_replace.cpp.o -c /Users/habbyge/AndFix/jni/dalvik/dalvik_method_replace.cpp",
+  "file": "/Users/habbyge/AndFix/jni/dalvik/dalvik_method_replace.cpp"
+}
+]

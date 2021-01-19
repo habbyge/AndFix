@@ -111,7 +111,7 @@ public class AndFixManager {
 		mContext = context;
 		mSupport = Compat.isSupport();
 		if (mSupport) {
-			mSecurityChecker = new SecurityChecker(mContext);
+			mSecurityChecker = new SecurityChecker(mContext); // 检查patch包的签名安全
 			mOptDir = new File(mContext.getFilesDir(), DIR);
 			if (!mOptDir.exists() && !mOptDir.mkdirs()) {// make directory fail
 				mSupport = false;

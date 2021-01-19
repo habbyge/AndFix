@@ -49,6 +49,9 @@ public class PatchManager {
     private static final String SP_NAME = "_andfix_";
     private static final String SP_VERSION = "version";
 
+
+    // 可以看到这个保存补丁(patch)文件目录是：/data/data/com.lxyx.habbyge/files/apatch/xxx.apatch
+
     /**
      * context
      */
@@ -64,7 +67,7 @@ public class PatchManager {
     /**
      * patchs
      */
-    private final SortedSet<Patch> mPatchs;
+    private final SortedSet<Patch> mPatchs; // 支持多个patch(修复包)
     /**
      * classloaders
      */
@@ -156,7 +159,7 @@ public class PatchManager {
             Log.d(TAG, "patch [" + path + "] has be loaded.");
             return;
         }
-        FileUtil.copyFile(src, dest);// copy to patch's directory
+        FileUtil.copyFile(src, dest);
         Patch patch = addPatch(dest);
         if (patch != null) {
             loadPatch(patch);
@@ -174,8 +177,7 @@ public class PatchManager {
     }
 
     /**
-     * load patch,call when plugin be loaded. used for plugin architecture.</br>
-     * <p>
+     * load patch,call when plugin be loaded. used for plugin architecture.
      * need name and classloader of the plugin
      *
      * @param patchName   patch name

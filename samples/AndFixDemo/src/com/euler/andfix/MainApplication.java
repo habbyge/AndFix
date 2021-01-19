@@ -28,6 +28,7 @@ import com.alipay.euler.andfix.patch.PatchManager;
 public class MainApplication extends Application {
 	private static final String TAG = "AndFix.MainApplication";
 
+	// 需要修复的文件，这里的后缀名都是apatch
 	private static final String APATCH_PATH = "/out.apatch";
 	/**
 	 * patch manager
@@ -38,12 +39,12 @@ public class MainApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 
-		// initialize
+		// 初始化补丁管理器：支持多个补丁
 		mPatchManager = new PatchManager(this);
 		mPatchManager.init("1.0");
 		Log.i(TAG, "inited.");
 
-		// load patch
+		// load patch：；开始修复补丁包
 		mPatchManager.loadPatch();
 		Log.i(TAG, "apatch loaded.");
 

@@ -38,7 +38,7 @@
 
 static int apilevel;
 
-extern jboolean __attribute__ ((visibility ("hidden"))) 
+extern jboolean __attribute__ ((visibility ("hidden")))
 art_setup(JNIEnv* env, int level) {
 	apilevel = level;
 	return JNI_TRUE;
