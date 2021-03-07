@@ -15,31 +15,31 @@
  * limitations under the License.
  */
 
-#include <time.h>
-#include <stdlib.h>
-#include <stddef.h>
-#include <assert.h>
+#include <ctime>
+#include <cstdlib>
+#include <cstddef>
+#include <cassert>
 
-#include <stdbool.h>
+
 #include <fcntl.h>
 #include <dlfcn.h>
 
 #include <sys/stat.h>
 #include <dirent.h>
 #include <unistd.h>
-#include <ctype.h>
-#include <errno.h>
+#include <cctype>
+#include <cerrno>
 #include <utime.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
 #include "art.h"
-#include "common.h"
+#include "../common.h"
 
 static int apilevel;
 
 extern jboolean __attribute__ ((visibility ("hidden")))
-art_setup(JNIEnv* env, int level) {
+art_setup(JNIEnv*, int level) {
 	apilevel = level;
 	return JNI_TRUE;
 }
@@ -48,17 +48,17 @@ art_setup(JNIEnv* env, int level) {
  * dest替换src
  */
 extern void __attribute__ ((visibility ("hidden"))) 
-art_replaceMethod(JNIEnv* env, jobject src, jobject dest) {
+art_replaceMethod(JNIEnv* env, jobject method1, jobject method2) {
   if (apilevel > 23) {
-    replace_7_0(env, src, dest);
+    replace_7_0(env, method1, method2);
   } else if (apilevel > 22) {
-		replace_6_0(env, src, dest);
+		replace_6_0(env, method1, method2);
 	} else if (apilevel > 21) {
-		replace_5_1(env, src, dest);
+		replace_5_1(env, method1, method2);
 	} else if (apilevel > 19) {
-		replace_5_0(env, src, dest);
+		replace_5_0(env, method1, method2);
   } else {
-    replace_4_4(env, src, dest);
+    replace_4_4(env, method1, method2);
   }
 }
 

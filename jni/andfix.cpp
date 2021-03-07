@@ -35,7 +35,7 @@
  */
 
 #include <jni.h>
-#include <stdio.h>
+#include <cstdio>
 #include <cassert>
 
 #include "common.h"
@@ -48,13 +48,13 @@ extern void dalvik_replaceMethod(JNIEnv* env, jobject src, jobject dest);
 extern void dalvik_setFieldFlag(JNIEnv* env, jobject field);
 //art
 extern jboolean art_setup(JNIEnv* env, int apilevel);
-extern void art_replaceMethod(JNIEnv* env, jobject src, jobject dest);
+extern void art_replaceMethod(JNIEnv* env, jobject method2, jobject method1);
 extern void art_setFieldFlag(JNIEnv* env, jobject field);
 
 static bool isArt;
 
-static jboolean setup(JNIEnv* env, jclass clazz, jboolean isart, jint apilevel) {
-    isArt = isart;
+static jboolean setup(JNIEnv* env, jclass, jboolean isart, jint apilevel) {
+  isArt = isart;
 	LOGD("vm is: %s , apilevel is: %i", (isArt ? "art" : "dalvik"), (int) apilevel);
 	if (isArt) {
 		return art_setup(env, (int) apilevel);
@@ -66,15 +66,15 @@ static jboolean setup(JNIEnv* env, jclass clazz, jboolean isart, jint apilevel) 
 /**
  * dest替换src
  */
-static void replaceMethod(JNIEnv* env, jclass clazz, jobject src, jobject dest) {
+static void replaceMethod(JNIEnv* env, jclass, jobject method1, jobject method2) {
 	if (isArt) {
-		art_replaceMethod(env, src, dest);
+		art_replaceMethod(env, method1, method2);
 	} else {
-		dalvik_replaceMethod(env, src, dest);
+		dalvik_replaceMethod(env, method2, method1);
 	}
 }
 
-static void setFieldFlag(JNIEnv* env, jclass clazz, jobject field) {
+static void setFieldFlag(JNIEnv* env, jclass, jobject field) {
 	if (isArt) {
 		art_setFieldFlag(env, field);
 	} else {
@@ -107,14 +107,14 @@ static JNINativeMethod gMethods[] = {
  * Register several native methods for one class.
  */
 static int registerNativeMethods(JNIEnv* env, const char* className,
-                                 JNINativeMethod* gMethods, int numMethods) {
+                                 JNINativeMethod* methods, int numMethods) {
 									 
 	jclass clazz;
 	clazz = env->FindClass(className);
-	if (clazz == NULL) {
+	if (clazz == nullptr) {
 		return JNI_FALSE;
 	}
-	if (env->RegisterNatives(clazz, gMethods, numMethods) < 0) {
+	if (env->RegisterNatives(clazz, methods, numMethods) < 0) {
 		return JNI_FALSE;
 	}
 
@@ -136,21 +136,17 @@ static int registerNatives(JNIEnv* env) {
  *
  * Returns the JNI version on success, -1 on failure.
  */
-JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved) {
-	JNIEnv* env = NULL;
-	jint result = -1;
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void*) {
+	JNIEnv* env = nullptr;
 
 	if (vm->GetEnv((void**) &env, JNI_VERSION_1_4) != JNI_OK) {
 		return -1;
 	}
-	assert(env != NULL);
+	assert(env != nullptr);
 
 	if (!registerNatives(env)) { //注册
 		return -1;
 	}
 	/* success -- return valid version number */
-	result = JNI_VERSION_1_4;
-
-	return result;
+	return JNI_VERSION_1_4;
 }
-

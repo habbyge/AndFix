@@ -35,12 +35,12 @@
 
 #include "art.h"
 #include "art_7_0.h"
-#include "common.h"
+#include "../common.h"
 
 /**
  * src 替换为 dest
  */
-void replace_7_0(JNIEnv* env, jobject src, jobject dest) {
+void replace_7_0(JNIEnv* env, jobject method1, jobject method2) {
 	// - 这个思路的原理是(该方案成立的基石，关键点只2/2)：
 	// 1. jni 的反射支持
 	// 开发者如果知道 方法 或 域 的名称和类型，可以使用JNI来调用Java方法或访问Java域。Java反射API
@@ -84,39 +84,39 @@ void replace_7_0(JNIEnv* env, jobject src, jobject dest) {
   // ps: 其实在 rt/runtime/art_method.cc 中阅读 FromReflectedMethod() 函数的返回值就可以看出来，其返回的
   // 是 ArtMethod* 指针，即 ArtMethod 对象地址.
   // 这里都是通过在 https://cs.android.com/ 上阅读各个版本的 ASOP 源代码得到的.
-	auto* smeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(src);
-	auto* dmeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(dest);
+  auto* artMethod1 = (art::mirror::ArtMethod*) env->FromReflectedMethod(method1);
+	auto* artMethod2 = (art::mirror::ArtMethod*) env->FromReflectedMethod(method2);
 	// 为啥可以根据Android版本(适配性的需要)自己定义 art::mirror::ArtMethod 类，并强制类型转换？
 	// 我的理解是：对于二进制的字节码Elf文件来说，其实 ArtMethod的类路径是没有意义的，更进一步说，
 	// "这块儿存储大小" 符合 ArtMethod 的大小即可，且该类中的的各个字段，同样满足 "这块儿存储空间"的要求。
 
-	reinterpret_cast<art::mirror::Class*>(dmeth->declaring_class_)->clinit_thread_id_ =
-			reinterpret_cast<art::mirror::Class*>(smeth->declaring_class_)->clinit_thread_id_;
+	reinterpret_cast<art::mirror::Class*>(artMethod2->declaring_class_)->clinit_thread_id_ =
+			reinterpret_cast<art::mirror::Class*>(artMethod2->declaring_class_)->clinit_thread_id_;
 
-	reinterpret_cast<art::mirror::Class*>(dmeth->declaring_class_)->status_ =
+	reinterpret_cast<art::mirror::Class*>(artMethod2->declaring_class_)->status_ =
 			static_cast<art::mirror::Class::Status>(
-					reinterpret_cast<art::mirror::Class*>(smeth->declaring_class_)->status_ - 1);
+					reinterpret_cast<art::mirror::Class*>(artMethod2->declaring_class_)->status_ - 1);
 			
 	// for reflection invoke
-	reinterpret_cast<art::mirror::Class*>(dmeth->declaring_class_)->super_class_ = 0;
+	reinterpret_cast<art::mirror::Class*>(artMethod2->declaring_class_)->super_class_ = 0;
 
-	smeth->declaring_class_ = dmeth->declaring_class_;
-	smeth->access_flags_ = dmeth->access_flags_  | 0x0001;
-	smeth->dex_code_item_offset_ = dmeth->dex_code_item_offset_;
-	smeth->dex_method_index_ = dmeth->dex_method_index_;
-	smeth->method_index_ = dmeth->method_index_;
-	smeth->hotness_count_ = dmeth->hotness_count_;
+  artMethod1->declaring_class_ = artMethod2->declaring_class_;
+  artMethod1->access_flags_ = artMethod2->access_flags_  | 0x0001;
+  artMethod1->dex_code_item_offset_ = artMethod2->dex_code_item_offset_;
+  artMethod1->dex_method_index_ = artMethod2->dex_method_index_;
+  artMethod1->method_index_ = artMethod2->method_index_;
+  artMethod1->hotness_count_ = artMethod2->hotness_count_;
 
-	smeth->ptr_sized_fields_.dex_cache_resolved_methods_ = dmeth->ptr_sized_fields_.dex_cache_resolved_methods_;
-	smeth->ptr_sized_fields_.dex_cache_resolved_types_ = dmeth->ptr_sized_fields_.dex_cache_resolved_types_;
-	smeth->ptr_sized_fields_.entry_point_from_jni_ = dmeth->ptr_sized_fields_.entry_point_from_jni_;
+  artMethod1->ptr_sized_fields_.dex_cache_resolved_methods_ = artMethod2->ptr_sized_fields_.dex_cache_resolved_methods_;
+  artMethod1->ptr_sized_fields_.dex_cache_resolved_types_ = artMethod2->ptr_sized_fields_.dex_cache_resolved_types_;
+  artMethod1->ptr_sized_fields_.entry_point_from_jni_ = artMethod2->ptr_sized_fields_.entry_point_from_jni_;
 
-	smeth->ptr_sized_fields_.entry_point_from_quick_compiled_code_ =
-	    dmeth->ptr_sized_fields_.entry_point_from_quick_compiled_code_;
+  artMethod1->ptr_sized_fields_.entry_point_from_quick_compiled_code_ =
+      artMethod2->ptr_sized_fields_.entry_point_from_quick_compiled_code_;
 
-	LOGD("replace_7_0: %d , %d",
-			smeth->ptr_sized_fields_.entry_point_from_quick_compiled_code_,
-			dmeth->ptr_sized_fields_.entry_point_from_quick_compiled_code_);
+	LOGD("replace_7_0: %p , %p",
+       artMethod1->ptr_sized_fields_.entry_point_from_quick_compiled_code_,
+       artMethod2->ptr_sized_fields_.entry_point_from_quick_compiled_code_);
 }
 
 /**

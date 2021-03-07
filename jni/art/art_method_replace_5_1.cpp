@@ -35,7 +35,7 @@
 
 #include "art.h"
 #include "art_5_1.h"
-#include "common.h"
+#include "../common.h"
 
 void replace_5_1(JNIEnv* env, jobject src, jobject dest) {
 	art::mirror::ArtMethod* smeth = (art::mirror::ArtMethod*) env->FromReflectedMethod(src);

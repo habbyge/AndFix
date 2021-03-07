@@ -192,8 +192,6 @@ public class AndFixManager {
 
 			// 双亲机制，这里也是关键点之1/2，classLoader 决定的是该 补丁.apk 中被加载到内存中的class，
 			// 是否能够被原apk识别。
-			// TODO: 2020/12/8 按道理应该只有 DexClassLoader 才能加载 补丁.apk 中的class，Android默认的
-			// 	PathClassLoader 只能加载安装到系统路径中的apk，这里有疑问 ？？？？？？
 			ClassLoader patchClassLoader = new ClassLoader(classLoader) {
 
 				@Override
@@ -256,23 +254,21 @@ public class AndFixManager {
 	 * @param classLoader classloader
 	 * @param className name of target class
 	 * @param methodname name of target method
-	 * @param srcMethod source method
+	 * @param method2 source method
 	 */
-	private void replaceMethod(ClassLoader classLoader, String className,
-							   String methodname, Method srcMethod) {
-
+	private void replaceMethod(ClassLoader classLoader, String className, String methodname, Method method2) {
 		try {
 			String key = className + "@" + classLoader.toString();
 			Class<?> clazz = mFixedClass.get(key);
 			if (clazz == null) { // class not load
-				Class<?> clzz = classLoader.loadClass(className);
+				Class<?> class1 = classLoader.loadClass(className);
 				// initialize target class
-				clazz = AndFix.initTargetClass(clzz);
+				clazz = AndFix.initTargetClass(class1);
 			}
 			if (clazz != null) { // initialize class OK
 				mFixedClass.put(key, clazz);
-				Method src = clazz.getDeclaredMethod(methodname, srcMethod.getParameterTypes());
-				AndFix.addReplaceMethod(src, srcMethod); // 前者 替换 后者
+				Method method1 = clazz.getDeclaredMethod(methodname, method2.getParameterTypes());
+				AndFix.addReplaceMethod(method1, method2); // 前者 替换 后者
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "replaceMethod", e);

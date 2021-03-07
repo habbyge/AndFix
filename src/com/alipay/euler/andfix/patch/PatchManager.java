@@ -49,7 +49,6 @@ public class PatchManager {
     private static final String SP_NAME = "_andfix_";
     private static final String SP_VERSION = "version";
 
-
     // 可以看到这个保存补丁(patch)文件目录是：/data/data/com.lxyx.habbyge/files/apatch/xxx.apatch
 
     /**
@@ -148,7 +147,6 @@ public class PatchManager {
      * add patch at runtime
      * @param path patch path
      */
-    @SuppressWarnings("unused")
     public void addPatch(String path) throws IOException {
         File src = new File(path);
         File dest = new File(mPatchDir, src.getName());

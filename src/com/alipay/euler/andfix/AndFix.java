@@ -36,21 +36,21 @@ public class AndFix {
 
 	private static native boolean setup(boolean isArt, int apilevel);
 	// dest 替换 src
-	private static native void replaceMethod(Method src, Method dest);
+	private static native void replaceMethod(Method method1, Method method2);
 	private static native void setFieldFlag(Field field);
 
 	/**
 	 * replace method's body: arg1 替换 arg2.
 	 * 
-	 * @param src source method
-	 * @param dest target method
+	 * @param method1 source method
+	 * @param method2 target method
 	 * 
 	 */
-	public static void addReplaceMethod(Method src, Method dest) {
+	public static void addReplaceMethod(Method method1, Method method2) {
 		try {
-			replaceMethod(dest, src);
+			replaceMethod(method1, method2);
 			// 这里是参数 dest 所属的类的 Class<?>对象
-			initFields(dest.getDeclaringClass());
+			initFields(method2.getDeclaringClass());
 		} catch (Throwable e) {
 			Log.e(TAG, "addReplaceMethod", e);
 		}
